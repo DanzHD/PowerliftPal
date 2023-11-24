@@ -1,0 +1,40 @@
+// Testing Duplicate username
+POST http://localhost:5000/sign-up
+Content-Type: application/json
+
+{
+  "username": "testuser4",
+  "password": "testuser2"
+}
+
+
+###
+// Testing invalid username creation
+POST http://localhost:5000/sign-up
+Content-Type: application/json
+
+{
+  "username": "",
+  "password": "testpassword"
+}
+
+###
+// Testing invalid password
+POST http://localhost:5000/sign-up
+Content-Type: application/json
+
+{
+  "username": "32",
+  "password": "testpas"
+}
+
+###
+// Testing valid user creation
+POST http://localhost:5000/sign-up
+Content-Type: application/json
+
+{
+  "username": "validUser",
+  "password": "validPassword"
+}
+###
