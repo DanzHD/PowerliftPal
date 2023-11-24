@@ -5,6 +5,13 @@ const bcrypt = require('bcrypt')
 
 
 router.post('/sign-up', async (req, res) => {
+    if (req.body.username.length < 1 || !req.body.username) {
+        return res.sendStatus(422);
+    }
+    if (req.body.password.length < 8 || !req.body.password) {
+        return res.sendStatus(422);
+    }
+
     bcrypt.hash(req.body.password, 10, async (err, hashedPassword) => {
         try {
 
