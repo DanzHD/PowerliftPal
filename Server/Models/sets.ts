@@ -11,9 +11,7 @@ async function createSetsTable({client}) {
             SetNumber SERIAL NOT NULL,
             PRIMARY KEY(SetNumber, WorkoutID, ExerciseName),
             FOREIGN KEY(WorkoutID)
-                REFERENCES workouts(WorkoutID),
-            FOREIGN KEY(ExerciseName)
-                REFERENCES ExerciseType(NAME)
+                REFERENCES workouts(WorkoutID)
 
         );`)
     } catch(error) {
