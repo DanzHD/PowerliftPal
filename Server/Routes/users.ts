@@ -1,4 +1,4 @@
-const db = require('../utils/Database.tsx');
+const db = require('../utils/Database.ts');
 const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcrypt')

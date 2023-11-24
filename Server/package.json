@@ -46,7 +46,7 @@
 
   "scripts": {
 
-    "start": "nodemon app.tsx"
+    "start": "nodemon app.ts"
 
   }
 
