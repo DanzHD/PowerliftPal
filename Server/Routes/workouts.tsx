@@ -23,4 +23,22 @@ router.get('/workout/:id', async (req, res) => {
    }
 });
 
+router.get('/allworkouts', async (req, res) => {
+    try {
+        if (!req.isAuthenticated()) {
+            return res.sendStatus(403);
+        }
+
+        let workouts = await db.query(`SELECT * FROM workouts
+            WHERE username='${req.user.username}'
+        `)
+        return res.json(workouts['rows']);
+    } catch(error) {
+        console.log(error);
+        res.sendStatus(400);
+    }
+});
+
+
+
 module.exports = router;
