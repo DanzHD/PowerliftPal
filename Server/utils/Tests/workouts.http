@@ -1,0 +1,14 @@
+POST http://localhost:5000/log-in
+Content-Type: application/json
+
+{
+  "username": "validUser",
+  "password": "validPassword"
+}
+
+###
+
+GET http://localhost:5000/workout/id=1
+Accept: application/json
+
+###

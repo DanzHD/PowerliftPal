@@ -3,7 +3,6 @@ const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcrypt')
 
-
 router.post('/sign-up', async (req, res) => {
     if (req.body.username.length < 1 || !req.body.username) {
         return res.sendStatus(422);

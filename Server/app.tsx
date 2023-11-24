@@ -10,6 +10,7 @@ require('dotenv').config();
 
 const authenticationRoute = require('./Routes/authentication.tsx');
 const userRoute = require('./Routes/users.tsx');
+const workoutsRoute = require(`./Routes/workouts.tsx`);
 
 app.use(cors({
     origin: `${process.env.FRONTEND_ENDPOINT}`,
@@ -30,6 +31,7 @@ app.use(express.urlencoded({ extended: false }));
 
 app.use('/', authenticationRoute);
 app.use('/', userRoute);
+app.use(`/`, workoutsRoute);
 
 
 const PORT = process.env.APP_PORT || 5000
