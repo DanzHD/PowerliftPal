@@ -39,6 +39,29 @@ router.get('/allworkouts', async (req, res) => {
     }
 });
 
+router.post('/workout', async (req, res) => {
+   let { date, notes } = req.body;
+
+   try {
+       if (!req.isAuthenticated()) {
+           return res.sendStatus(403);
+       }
+       if (notes !== undefined) {
+           await db.query(`INSERT INTO workouts
+               VALUES (DEFAULT, '${date}', '${notes}', '${req.user.username}')
+           `)
+       } else {
+           await db.query(`INSERT INTO workouts
+               VALUES (DEFAULT, '${date}', NULL, '${req.user.username}')
+           `)
+       }
+
+       return res.sendStatus(200);
+   } catch (error) {
+       console.log(error);
+       return res.sendStatus(400);
+   }
+});
 
 
 module.exports = router;
