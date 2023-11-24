@@ -39,7 +39,7 @@ router.get('/allworkouts', async (req, res) => {
     }
 });
 
-router.post('/workout', async (req, res) => {
+router.post('/workout/create', async (req, res) => {
    let { date, notes } = req.body;
 
    try {
@@ -63,5 +63,46 @@ router.post('/workout', async (req, res) => {
    }
 });
 
+router.post('/workout/deleteOne', async (req, res) => {
+    const workoutID = req.body.ID;
+    try {
+        if (!req.isAuthenticated()) {
+            res.sendStatus(403)
+        }
+
+        await db.query(`DELETE  FROM workouts
+            WHERE workoutid = '${workoutID}';
+        `)
+        res.sendStatus(200);
+
+    } catch(error) {
+        console.log(error);
+        res.sendStatus(400);
+    }
+})
+
+router.post('/workout/deleteMultiple', async (req, res) => {
+
+    try {
+
+        let workoutIDs = req.body.IDs.toString();
+        workoutIDs = workoutIDs.replace('[', '(').replace(']', ')');
+
+        if (!req.isAuthenticated()) {
+            res.sendStatus(403);
+        }
+
+        await db.query(`DELETE FROM workouts 
+            WHERE workoutid in (${workoutIDs})
+        `)
+        res.sendStatus(200);
+
+    } catch(error) {
+        console.log(error);
+        res.sendStatus(400);
+    }
+
+
+})
 
 module.exports = router;
