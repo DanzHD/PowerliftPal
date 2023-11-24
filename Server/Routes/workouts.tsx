@@ -105,4 +105,25 @@ router.post('/workout/deleteMultiple', async (req, res) => {
 
 })
 
+router.post('/workout/update', async (req, res) => {
+    const { date: newDate, notes: newNotes } = req.body;
+
+    try {
+        if (!req.isAuthenticated()) {
+            res.sendStatus(403);
+        }
+
+        await db.query(`UPDATE workouts SET
+            workoutdate = COALESCE(NULLIF('${newDate}', 'undefined'), workoutdate::text)::date,
+            notes = COALESCE(NULLIF('${newNotes}', 'undefined'), notes)
+            WHERE workoutid=${req.body.ID}
+        `)
+        res.sendStatus(200);
+    } catch(error) {
+        console.log(error);
+        res.sendStatus(400);
+    }
+
+});
+
 module.exports = router;
