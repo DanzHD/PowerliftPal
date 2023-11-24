@@ -4,7 +4,7 @@ const router = express.Router();
 const session = require('express-session');
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
-const db = require('../utils/Database.ts');
+const db = require('../utils/Database.tsx');
 const bcrypt = require('bcrypt');
 
 passport.use(
