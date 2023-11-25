@@ -67,7 +67,7 @@ router.post('/workout/deleteOne', async (req, res) => {
     const workoutID = req.body.ID;
     try {
         if (!req.isAuthenticated()) {
-            res.sendStatus(403)
+            return res.sendStatus(403)
         }
 
         await db.query(`DELETE  FROM workouts
@@ -89,7 +89,7 @@ router.post('/workout/deleteMultiple', async (req, res) => {
         workoutIDs = workoutIDs.replace('[', '(').replace(']', ')');
 
         if (!req.isAuthenticated()) {
-            res.sendStatus(403);
+            return res.sendStatus(403);
         }
 
         await db.query(`DELETE FROM workouts 
@@ -110,7 +110,7 @@ router.post('/workout/update', async (req, res) => {
 
     try {
         if (!req.isAuthenticated()) {
-            res.sendStatus(403);
+            return res.sendStatus(403);
         }
 
         await db.query(`UPDATE workouts SET

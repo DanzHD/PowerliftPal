@@ -7,7 +7,7 @@ router.post('/bodyPart/create', async (req, res) => {
 
     try {
         if (!req.isAuthenticated()) {
-            res.sendStatus(403);
+            return res.sendStatus(403);
         }
 
         await db.query(`INSERT INTO bodypart 
@@ -24,7 +24,7 @@ router.post('/bodyPart/create', async (req, res) => {
 router.get('/bodypart/readAll', async (req, res) => {
    try {
        if (!req.isAuthenticated()) {
-           res.sendStatus(403);
+           return res.sendStatus(403);
        }
 
        let muscleGroups = await db.query(`SELECT * FROM bodypart`);

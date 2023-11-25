@@ -7,7 +7,7 @@ router.post('/exercisetype/create', async (req, res) => {
    const username = req.user.username;
    try {
        if (!req.isAuthenticated()) {
-           res.sendStatus(403);
+           return res.sendStatus(403);
        }
 
        await db.query(`INSERT INTO exercisetype 
@@ -23,10 +23,10 @@ router.post('/exercisetype/create', async (req, res) => {
 router.post('/exercisetype/update', async (req, res) => {
     const {pr: newPr, newName, oldName, muscleGroup: newMuscleGroup} = req.body;
     const username = req.user.username;
-    console.log(newMuscleGroup);
+
     try {
         if (!req.isAuthenticated()) {
-            res.sendStatus(403);
+            return res.sendStatus(403);
         }
 
         await db.query(`UPDATE exercisetype 
@@ -53,7 +53,7 @@ router.post('/exercisetype/delete', async (req, res) => {
 
    try {
        if (!req.isAuthenticated()) {
-           res.sendStatus(403);
+           return res.sendStatus(403);
        }
 
        await db.query(`DELETE FROM exercisetype
@@ -71,7 +71,7 @@ router.get('/exercisetype/readAll', async (req, res) => {
 
     try {
         if (!req.isAuthenticated()) {
-            res.sendStatus(403);
+            return res.sendStatus(403);
         }
 
         let exerciseTypes = await db.query(`SELECT * FROM exerciseType
