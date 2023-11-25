@@ -6,6 +6,9 @@ router.post('/set/create', async (req, res) => {
     const {warmUp, rest, reps, intensity, notes, workoutID, exerciseName} = req.body;
 
     try {
+        if (!req.isAuthentiated()) {
+            return res.sendStatus(403);
+        }
         let setNumber = await db.query(`SELECT MAX(setnumber) FROM sets
             WHERE 
                 workoutID=${workoutID} AND
@@ -37,15 +40,50 @@ router.post('/set/delete', async (req, res) => {
 /*
     Gets 1 set from a workout's exercise
  */
-router.get('/set/:workoutid/:exercisename/:setnumber', async (req, res) => {
+router.get('/set/:workoutID/:exerciseName/:setNumber', async (req, res) => {
+    const {workoutID, exerciseName, setNumber} = req.params;
 
-})
+    try {
+        if (!req.isAuthentiated()) {
+            return res.sendStatus(403);
+        }
+
+        let set = await db.query(`SELECT * FROM sets
+            WHERE 
+                workoutid = ${workoutID} AND
+                exercisename = '${exerciseName}' AND
+                setNumber = ${setNumber}
+        `)
+
+        res.json(set['rows'][0]);
+
+    } catch (error) {
+        console.log(error);
+        res.sendStatus(400);
+    }
+});
 
 /*
     Gets all sets from a workout's exercise
  */
-router.get('/set/:workoutid/:exercisename', async (req, res) => {
+router.get('/sets/:workoutID/:exerciseName', async (req, res) => {
+    const { workoutID, exerciseName } = req.params;
 
-})
+    try {
+        if (!req.isAuthentiated()) {
+            return res.sendStatus(403);
+        }
+
+        let sets = await db.query(`SELECT * FROM sets
+            WHERE 
+                workoutid = ${workoutID} AND
+                exercisename = '${exerciseName}'
+        `);
+        res.json(sets['rows']);
+    } catch (error) {
+        console.log(error);
+        res.sendStatus(400);
+    }
+});
 
 module.exports = router;
