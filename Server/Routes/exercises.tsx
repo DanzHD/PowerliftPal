@@ -3,12 +3,12 @@ const express = require('express');
 const router = express.Router();
 
 router.post('/exercise/create', async (req, res) => {
-    const { workoutid, name, intensity } = req.body;
-    const username = req.user.username;
 
     try {
+        const { workoutid, name, intensity } = req.body;
+        const username = req.user.username;
         if (!req.isAuthenticated()) {
-            res.sendStatus(403);
+            return res.sendStatus(403);
         }
 
         await db.query(`INSERT INTO exercise
@@ -22,12 +22,12 @@ router.post('/exercise/create', async (req, res) => {
 });
 
 router.post('/exercise/delete', async (req, res) => {
-   const {workoutid, name} = req.body;
-   const username = req.user.username;
 
    try {
+       const {workoutid, name} = req.body;
+       const username = req.user.username;
        if (!req.isAuthenticated()) {
-           res.sendStatus(403);
+           return res.sendStatus(403);
        }
 
        await db.query(`DELETE FROM exercise
@@ -45,12 +45,12 @@ router.post('/exercise/delete', async (req, res) => {
 });
 
 router.post('/exercise/update', async (req, res) => {
-    const {workoutid, name, intensity} = req.body;
-    const username = req.user.username;
 
     try {
+        const {workoutid, name, intensity} = req.body;
+        const username = req.user.username;
         if (!req.isAuthenticated()) {
-            res.sendStatus(403);
+            return res.sendStatus(403);
         }
 
         await db.query(`UPDATE exercise SET
@@ -61,6 +61,29 @@ router.post('/exercise/update', async (req, res) => {
             username = '${username}'
         `);
         res.sendStatus(200);
+
+    } catch (error) {
+        console.log(error);
+        res.sendStatus(400);
+    }
+})
+
+router.get('/exercise/:id', async (req, res) => {
+
+    try {
+        const workoutID = req.params.id;
+        const username = req.user.username;
+
+        if (!req.isAuthenticated()) {
+            return res.sendStatus(403);
+        }
+
+        const exercises = await db.query(`SELECT * FROM exercise
+            WHERE
+            workoutid = ${workoutID} AND 
+            username = '${username}'
+        `)
+        res.json(exercises['rows']);
 
     } catch (error) {
         console.log(error);
