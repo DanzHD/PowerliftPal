@@ -47,17 +47,18 @@ Content-Type: application/json
   "intensity": "3",
   "notes": "Tough set",
   "exerciseName": "BenchPress",
-  "setNumber": "2"
+  "setNumber": "5"
 }
 
 ###
 
-POST http://localhost:5000/log-in
+POST http://localhost:5000/set/delete
 Content-Type: application/json
 
 {
-  "username": "testuser4",
-  "password": "testuser2"
+  "workoutID": "1",
+  "setNumber": "5",
+  "exerciseName": "BenchPress"
 }
 
 ###

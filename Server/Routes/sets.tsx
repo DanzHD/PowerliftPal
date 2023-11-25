@@ -58,7 +58,42 @@ router.post('/set/update', async (req, res) => {
 });
 
 router.post('/set/delete', async (req, res) => {
+    const {workoutID, exerciseName, setNumber} = req.body;
 
+    try {
+        if (!req.isAuthenticated()) {
+            return res.sendStatus(403);
+        }
+
+        await db.query(`
+            DELETE FROM sets
+            WHERE
+                workoutid = ${workoutID} AND
+                exercisename = '${exerciseName}' AND
+                setnumber = ${setNumber};
+                
+            UPDATE sets
+            SET 
+                setnumber = -(setnumber - 1)
+            WHERE 
+                setnumber >= ${setNumber};
+                
+            UPDATE sets
+            SET 
+                setnumber = -setnumber 
+            WHERE
+                setnumber <= -${setNumber};
+            
+        `);
+
+
+
+        res.sendStatus(200);
+
+    } catch (error) {
+        console.log(error);
+        res.sendStatus(400);
+    }
 });
 
 /*
