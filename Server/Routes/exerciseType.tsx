@@ -47,4 +47,23 @@ router.post('/exercisetype/update', async (req, res) => {
 
 })
 
+router.post('/exercisetype/delete', async (req, res) => {
+   const { name } = req.body;
+   const username = req.user.username;
+
+   try {
+       if (!req.isAuthenticated()) {
+           res.sendStatus(403);
+       }
+
+       await db.query(`DELETE FROM exercisetype
+            WHERE name='${name}' AND username='${username}'
+       `)
+       res.sendStatus(200);
+   } catch(error) {
+       console.log(error);
+       res.sendStatus(400);
+   }
+});
+
 module.exports = router;
