@@ -18,7 +18,8 @@ router.post('/sign-up', async (req, res) => {
                 console.log(err);
             } else {
                 await db.query(`INSERT INTO users 
-                    VALUES ('${req.body.username}', '${hashedPassword}')`
+                    VALUES 
+                        ('${req.body.username}', '${hashedPassword}')`
                 );
             }
 

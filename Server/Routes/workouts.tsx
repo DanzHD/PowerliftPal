@@ -3,17 +3,17 @@ const express = require('express');
 const router = express.Router();
 
 router.get('/workout/:id', async (req, res) => {
-   console.log(req.params.id);
+
    try {
        if (!req.isAuthenticated()) {
            return res.sendStatus(403);
        }
 
        let workouts = await db.query(`SELECT * FROM workouts
-            WHERE username='${req.user.username}'
-            AND workoutid='${req.params.id}'
+            WHERE 
+                username='${req.user.username}' AND
+                workoutid='${req.params.id}'
        `);
-       console.log(workouts.rows[0]);
        return res.json(workouts['rows'][0]);
 
 
@@ -30,7 +30,8 @@ router.get('/allworkouts', async (req, res) => {
         }
 
         let workouts = await db.query(`SELECT * FROM workouts
-            WHERE username='${req.user.username}'
+            WHERE 
+                username='${req.user.username}'
         `)
         return res.json(workouts['rows']);
     } catch(error) {
@@ -48,11 +49,13 @@ router.post('/workout/create', async (req, res) => {
        }
        if (notes !== undefined) {
            await db.query(`INSERT INTO workouts
-               VALUES (DEFAULT, '${date}', '${notes}', '${req.user.username}')
+               VALUES 
+                   (DEFAULT, '${date}', '${notes}', '${req.user.username}')
            `)
        } else {
            await db.query(`INSERT INTO workouts
-               VALUES (DEFAULT, '${date}', NULL, '${req.user.username}')
+               VALUES (
+                   DEFAULT, '${date}', NULL, '${req.user.username}')
            `)
        }
 
@@ -71,7 +74,8 @@ router.post('/workout/deleteOne', async (req, res) => {
         }
 
         await db.query(`DELETE  FROM workouts
-            WHERE workoutid = '${workoutID}';
+            WHERE 
+                workoutid = '${workoutID}';
         `)
         res.sendStatus(200);
 
@@ -93,7 +97,8 @@ router.post('/workout/deleteMultiple', async (req, res) => {
         }
 
         await db.query(`DELETE FROM workouts 
-            WHERE workoutid in (${workoutIDs})
+            WHERE 
+                workoutid in (${workoutIDs})
         `)
         res.sendStatus(200);
 
@@ -113,10 +118,12 @@ router.post('/workout/update', async (req, res) => {
             return res.sendStatus(403);
         }
 
-        await db.query(`UPDATE workouts SET
-            workoutdate = COALESCE(NULLIF('${newDate}', 'undefined'), workoutdate::text)::date,
-            notes = COALESCE(NULLIF('${newNotes}', 'undefined'), notes)
-            WHERE workoutid=${req.body.ID}
+        await db.query(`UPDATE workouts 
+            SET
+                workoutdate = COALESCE(NULLIF('${newDate}', 'undefined'), workoutdate::text)::date,
+                notes = COALESCE(NULLIF('${newNotes}', 'undefined'), notes)
+            WHERE 
+                workoutid=${req.body.ID}
         `)
         res.sendStatus(200);
     } catch(error) {

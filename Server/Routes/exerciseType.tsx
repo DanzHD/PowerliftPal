@@ -31,12 +31,12 @@ router.post('/exercisetype/update', async (req, res) => {
 
         await db.query(`UPDATE exercisetype 
             SET 
-            name = COALESCE(NULLIF('${newName}', 'undefined'), name),
-            personalrecord = COALESCE(NULLIF('${newPr}', 'undefined'), personalrecord::text)::decimal(2),
-            musclegroup = COALESCE(NULLIF('${newMuscleGroup}', 'undefined'), musclegroup)
+                name = COALESCE(NULLIF('${newName}', 'undefined'), name),
+                personalrecord = COALESCE(NULLIF('${newPr}', 'undefined'), personalrecord::text)::decimal(2),
+                musclegroup = COALESCE(NULLIF('${newMuscleGroup}', 'undefined'), musclegroup)
             WHERE
-            username = '${username}' AND
-            name = '${oldName}'
+                username = '${username}' AND
+                name = '${oldName}'
         `)
         res.sendStatus(200);
 
@@ -57,7 +57,8 @@ router.post('/exercisetype/delete', async (req, res) => {
        }
 
        await db.query(`DELETE FROM exercisetype
-            WHERE name='${name}' AND username='${username}'
+            WHERE 
+                name='${name}' AND username='${username}'
        `)
        res.sendStatus(200);
    } catch(error) {
@@ -75,7 +76,8 @@ router.get('/exercisetype/readAll', async (req, res) => {
         }
 
         let exerciseTypes = await db.query(`SELECT * FROM exerciseType
-            WHERE username='${username}'
+            WHERE 
+                username='${username}'
         `)
         res.json(exerciseTypes['rows']);
     } catch(error) {

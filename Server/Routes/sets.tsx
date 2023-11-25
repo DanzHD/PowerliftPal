@@ -18,8 +18,9 @@ router.post('/set/create', async (req, res) => {
         setNumber = setNumber['rows'][0]['max'] + 1;
 
         await db.query(`INSERT INTO sets
-            VALUES (${warmUp}, NULLIF('${rest}', 'undefined')::interval, ${reps}, NULLIF('${intensity}', 'undefined')::smallint,
-            NULLIF('${notes}', 'undefined'), ${workoutID}, '${exerciseName}', ${setNumber})
+            VALUES 
+                (${warmUp}, NULLIF('${rest}', 'undefined')::interval, ${reps}, NULLIF('${intensity}', 'undefined')::smallint,
+                NULLIF('${notes}', 'undefined'), ${workoutID}, '${exerciseName}', ${setNumber})
         `);
 
         res.sendStatus(200)
@@ -36,12 +37,13 @@ router.post('/set/update', async (req, res) => {
             return res.sendStatus(403);
         }
 
-        await db.query(`UPDATE sets SET
-            warmup = COALESCE(NULLIF('${warmUp}', 'undefined'), warmup::text)::boolean,
-            rest = COALESCE(NULLIF('${rest}', 'undefined'), rest::text)::interval,
-            reps = COALESCE(NULLIF('${reps}', 'undefined'), reps::text)::smallint,
-            intensity = COALESCE(NULLIF('${intensity}', 'undefined'), intensity::text)::smallint,
-            notes = COALESCE(NULLIF('${notes}', 'undefined'), notes)
+        await db.query(`UPDATE sets 
+            SET
+                warmup = COALESCE(NULLIF('${warmUp}', 'undefined'), warmup::text)::boolean,
+                rest = COALESCE(NULLIF('${rest}', 'undefined'), rest::text)::interval,
+                reps = COALESCE(NULLIF('${reps}', 'undefined'), reps::text)::smallint,
+                intensity = COALESCE(NULLIF('${intensity}', 'undefined'), intensity::text)::smallint,
+                notes = COALESCE(NULLIF('${notes}', 'undefined'), notes)
             WHERE 
                 workoutid = ${workoutID} AND
                 exercisename = '${exerciseName}' AND

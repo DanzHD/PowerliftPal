@@ -32,9 +32,9 @@ router.post('/exercise/delete', async (req, res) => {
 
        await db.query(`DELETE FROM exercise
            WHERE 
-           workoutid = ${workoutid} AND
-           name = '${name}' AND
-           username = '${username}'
+               workoutid = ${workoutid} AND
+               name = '${name}' AND
+               username = '${username}'
        `)
        res.sendStatus(200);
 
@@ -53,12 +53,13 @@ router.post('/exercise/update', async (req, res) => {
             return res.sendStatus(403);
         }
 
-        await db.query(`UPDATE exercise SET
-            intensity = COALESCE(NULLIF('${intensity}', 'undefined'), '${intensity}')::smallint
+        await db.query(`UPDATE exercise 
+            SET
+                intensity = COALESCE(NULLIF('${intensity}', 'undefined'), '${intensity}')::smallint
             WHERE 
-            workoutid = ${workoutid} AND
-            name = '${name}' AND 
-            username = '${username}'
+                workoutid = ${workoutid} AND
+                name = '${name}' AND 
+                username = '${username}'
         `);
         res.sendStatus(200);
 
@@ -80,8 +81,8 @@ router.get('/exercise/:id', async (req, res) => {
 
         const exercises = await db.query(`SELECT * FROM exercise
             WHERE
-            workoutid = ${workoutID} AND 
-            username = '${username}'
+                workoutid = ${workoutID} AND 
+                username = '${username}'
         `)
         res.json(exercises['rows']);
 
