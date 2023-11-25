@@ -17,7 +17,7 @@ POST http://localhost:5000/set/create
 Content-Type: application/json
 
 {
-  "workoutID": "1",
+  "workoutID": "3",
   "warmUp": "true",
   "rest": "00:02:02",
   "reps": "5",
@@ -33,5 +33,31 @@ GET http://localhost:5000/set/1/BenchPress/3
 ###
 
 GET http://localhost:5000/sets/1/BenchPress
+
+###
+
+POST http://localhost:5000/set/update
+Content-Type: application/json
+
+{
+  "workoutID": "1",
+  "warmUp": "true",
+  "rest": "00:00:05",
+  "reps": "8",
+  "intensity": "3",
+  "notes": "Tough set",
+  "exerciseName": "BenchPress",
+  "setNumber": "2"
+}
+
+###
+
+POST http://localhost:5000/log-in
+Content-Type: application/json
+
+{
+  "username": "testuser4",
+  "password": "testuser2"
+}
 
 ###

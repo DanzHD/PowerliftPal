@@ -30,7 +30,29 @@ router.post('/set/create', async (req, res) => {
 });
 
 router.post('/set/update', async (req, res) => {
+    const {warmUp, rest, reps, intensity, notes, workoutID, exerciseName, setNumber} = req.body;
+    try {
+        if (!req.isAuthenticated()) {
+            return res.sendStatus(403);
+        }
 
+        await db.query(`UPDATE sets SET
+            warmup = COALESCE(NULLIF('${warmUp}', 'undefined'), warmup::text)::boolean,
+            rest = COALESCE(NULLIF('${rest}', 'undefined'), rest::text)::interval,
+            reps = COALESCE(NULLIF('${reps}', 'undefined'), reps::text)::smallint,
+            intensity = COALESCE(NULLIF('${intensity}', 'undefined'), intensity::text)::smallint,
+            notes = COALESCE(NULLIF('${notes}', 'undefined'), notes)
+            WHERE 
+                workoutid = ${workoutID} AND
+                exercisename = '${exerciseName}' AND
+                setNumber = '${setNumber}'
+        `)
+        res.sendStatus(200);
+
+    } catch (error) {
+        console.log(error);
+        res.sendStatus(400);
+    }
 });
 
 router.post('/set/delete', async (req, res) => {
