@@ -28,7 +28,7 @@ router.get('/bodypart/readAll', async (req, res) => {
        }
 
        let muscleGroups = await db.query(`SELECT * FROM bodypart`);
-       res.json(muscleGroups);
+       res.json(muscleGroups['rows']);
    } catch(error) {
        console.log(error);
        res.sendStatus(400);

@@ -66,4 +66,22 @@ router.post('/exercisetype/delete', async (req, res) => {
    }
 });
 
+router.get('/exercisetype/readAll', async (req, res) => {
+    let username = req.user.username;
+
+    try {
+        if (!req.isAuthenticated()) {
+            res.sendStatus(403);
+        }
+
+        let exerciseTypes = await db.query(`SELECT * FROM exerciseType
+            WHERE username='${username}'
+        `)
+        res.json(exerciseTypes['rows']);
+    } catch(error) {
+        console.log(error);
+        res.sendStatus(400);
+    }
+});
+
 module.exports = router;
