@@ -1,0 +1,29 @@
+POST http://localhost:5000/set/create
+Content-Type: application/json
+
+{
+  "workoutID": "1",
+  "warmUp": "false",
+  "rest": "00:02:02",
+  "reps": "5",
+  "intensity": "3",
+  "notes": "Tough set",
+  "exerciseName": "BenchPress"
+}
+
+###
+
+POST http://localhost:5000/set/create
+Content-Type: application/json
+
+{
+  "workoutID": "1",
+  "warmUp": "true",
+  "rest": "00:02:02",
+  "reps": "5",
+  "intensity": "3",
+  "notes": "Tough set",
+  "exerciseName": "BenchPress"
+}
+
+###

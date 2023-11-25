@@ -7,13 +7,13 @@ const session = require('express-session');
 const cookieParser = require('cookie-parser');
 require('dotenv').config();
 
-
 const authenticationRoute = require('./Routes/authentication.tsx');
 const userRoute = require('./Routes/users.tsx');
 const workoutsRoute = require(`./Routes/workouts.tsx`);
 const exerciseTypeRoute = require('./Routes/exerciseType.tsx');
 const exercisesRoute = require('./Routes/exercises.tsx');
-const bodyPart = require('./Routes/bodyPart.tsx');
+const bodyPartRoute = require('./Routes/bodyPart.tsx');
+const setsRoute = require('./Routes/sets.tsx');
 
 app.use(cors({
     origin: `${process.env.FRONTEND_ENDPOINT}`,
@@ -36,8 +36,9 @@ app.use('/', authenticationRoute);
 app.use('/', userRoute);
 app.use(`/`, workoutsRoute);
 app.use('/', exercisesRoute);
-app.use('/', bodyPart);
+app.use('/', bodyPartRoute);
 app.use('/', exerciseTypeRoute);
+app.use('/', setsRoute);
 
 
 const PORT = process.env.APP_PORT || 5000
