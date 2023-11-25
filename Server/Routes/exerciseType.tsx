@@ -4,7 +4,7 @@ const router = express.Router();
 
 router.post('/exercisetype/create', async (req, res) => {
    const {pr, name, muscleGroup} = req.body;
-    const username = req.user.username;
+   const username = req.user.username;
    try {
        if (!req.isAuthenticated()) {
            res.sendStatus(403);
@@ -19,5 +19,32 @@ router.post('/exercisetype/create', async (req, res) => {
        res.sendStatus(400);
    }
 });
+
+router.post('/exercisetype/update', async (req, res) => {
+    const {pr: newPr, newName, oldName, muscleGroup: newMuscleGroup} = req.body;
+    const username = req.user.username;
+    console.log(newMuscleGroup);
+    try {
+        if (!req.isAuthenticated()) {
+            res.sendStatus(403);
+        }
+
+        await db.query(`UPDATE exercisetype 
+            SET 
+            name = COALESCE(NULLIF('${newName}', 'undefined'), name),
+            personalrecord = COALESCE(NULLIF('${newPr}', 'undefined'), personalrecord::text)::decimal(2),
+            musclegroup = COALESCE(NULLIF('${newMuscleGroup}', 'undefined'), musclegroup)
+            WHERE
+            username = '${username}' AND
+            name = '${oldName}'
+        `)
+        res.sendStatus(200);
+
+    } catch(error) {
+        console.log(error);
+        res.sendStatus(400);
+    }
+
+})
 
 module.exports = router;
