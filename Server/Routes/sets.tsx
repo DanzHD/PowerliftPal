@@ -3,7 +3,7 @@ const express = require('express');
 const router = express.Router();
 
 router.post('/set/create', async (req, res) => {
-    const {warmUp, rest, reps, intensity, notes, workoutID, exerciseName} = req.body;
+    const {warmUp, rest, reps, intensity, notes, workoutID, exerciseName, weight} = req.body;
 
     try {
         if (!req.isAuthentiated()) {
@@ -20,7 +20,7 @@ router.post('/set/create', async (req, res) => {
         await db.query(`INSERT INTO sets
             VALUES 
                 (${warmUp}, NULLIF('${rest}', 'undefined')::interval, ${reps}, NULLIF('${intensity}', 'undefined')::smallint,
-                NULLIF('${notes}', 'undefined'), ${workoutID}, '${exerciseName}', ${setNumber})
+                NULLIF('${notes}', 'undefined'), ${workoutID}, '${exerciseName}', ${setNumber}, ${weight})
         `);
 
         res.sendStatus(200)
@@ -31,7 +31,7 @@ router.post('/set/create', async (req, res) => {
 });
 
 router.post('/set/update', async (req, res) => {
-    const {warmUp, rest, reps, intensity, notes, workoutID, exerciseName, setNumber} = req.body;
+    const {warmUp, rest, reps, intensity, notes, workoutID, exerciseName, setNumber, weight} = req.body;
     try {
         if (!req.isAuthenticated()) {
             return res.sendStatus(403);
@@ -43,7 +43,8 @@ router.post('/set/update', async (req, res) => {
                 rest = COALESCE(NULLIF('${rest}', 'undefined'), rest::text)::interval,
                 reps = COALESCE(NULLIF('${reps}', 'undefined'), reps::text)::smallint,
                 intensity = COALESCE(NULLIF('${intensity}', 'undefined'), intensity::text)::smallint,
-                notes = COALESCE(NULLIF('${notes}', 'undefined'), notes)
+                notes = COALESCE(NULLIF('${notes}', 'undefined'), notes),
+                weight = COALESCE(NULLIF('${weight}', 'undefined'), weight::text)::decimal(2)
             WHERE 
                 workoutid = ${workoutID} AND
                 exercisename = '${exerciseName}' AND
