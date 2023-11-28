@@ -53,7 +53,7 @@ router.post('/log-in',
 );
 
 router.get('/log-in/success', (req, res) => {
-    res.sendStatus(200);
+    res.json({username: req.user.username});
 });
 
 router.get('/log-in/failure', (req, res) => {
@@ -63,9 +63,12 @@ router.get('/log-in/failure', (req, res) => {
 router.get("/log-out", (req, res, next) => {
     req.logout((err) => {
         if (err) {
-            return next(err);
+            return res.sendStatus(400);
+        } else {
+            return res.sendStatus(200);
         }
     });
+
 })
 
 router.get('/authenticated', (req, res) => {

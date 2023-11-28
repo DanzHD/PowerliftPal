@@ -1,6 +1,13 @@
 import Navbar from "../../../common/components/navbar/Navbar.tsx";
+import Layout from "../../../common/components/Layout/Layout.tsx";
+import Content from "./Components/Content.tsx";
+import Header from "./Components/Header.tsx";
+import RightSideBar from "./Components/RightSideBar.tsx";
+import Footer from "./Components/Footer.tsx";
+import {useAuthContext} from "../../../Contexts/AuthContext.tsx";
 
 function Dashboard() {
+    const {logoutUser} = useAuthContext();
 
     return (
     <>
@@ -37,9 +44,12 @@ function Dashboard() {
             </div>
 
         </Navbar>
-        <div className='content'>
 
-        </div>
+        <Layout content={Content()} header={Header()} sideBar={RightSideBar()} footer={Footer()} >
+        </Layout>
+
+
+
     </>
     )
 }

@@ -40,6 +40,15 @@ router.post('/sign-up', async (req, res) => {
 
 });
 
+router.get('/username', (req, res) => {
+
+    if (req.user) {
+
+        res.json({username: req.user.username});
+    } else {
+        res.json({username: false})
+    }
+});
 
 module.exports = router;
 

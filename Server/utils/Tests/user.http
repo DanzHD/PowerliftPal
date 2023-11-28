@@ -1,5 +1,5 @@
 // Testing Duplicate username
-POST http://localhost:5000/sign-up
+POST http://localhost:5000/log-in
 Content-Type: application/json
 
 {
@@ -36,5 +36,15 @@ Content-Type: application/json
 {
   "username": "validUser",
   "password": "validPassword"
+}
+
+###
+
+GET http://localhost:5000/username
+Content-Type: application/json
+
+{
+  "username": "testuser4",
+  "password": "testuser2"
 }
 ###

@@ -1,0 +1,43 @@
+@import '../../../Styles/vars';
+
+@media only screen and (max-width: $mobile-width) {
+
+}
+
+.main {
+
+  display: grid;
+  grid-template-areas: 'header' 'main-content' 'right-sidebar' 'footer';
+}
+
+.main > * {
+  padding: 1rem;
+}
+
+.main > .header {
+  grid-area: header;
+}
+
+.main > .right-sidebar {
+  grid-area: right-sidebar;
+}
+
+.main > .footer {
+  grid-area: footer;
+}
+
+@media only screen and (min-width: $mobile-width) {
+  .main {
+    min-height: 100vh;
+    grid-template-columns:repeat(3, 1fr);
+    grid-template-areas:
+      'header header header'
+      'main-content main-content right-sidebar'
+      'main-content main-content right-sidebar'
+      'main-content main-content right-sidebar'
+      'main-content main-content right-sidebar'
+      'main-content main-content right-sidebar'
+      'footer footer footer';
+    margin-left: $navbar-side-size;
+  }
+}
