@@ -14,6 +14,7 @@ const exerciseTypeRoute = require('./Routes/exerciseType.tsx');
 const exercisesRoute = require('./Routes/exercises.tsx');
 const bodyPartRoute = require('./Routes/bodyPart.tsx');
 const setsRoute = require('./Routes/sets.tsx');
+const queriesRoute = require('./Routes/Queries.tsx');
 
 app.use(cors({
     origin: `${process.env.FRONTEND_ENDPOINT}`,
@@ -39,6 +40,7 @@ app.use('/', exercisesRoute);
 app.use('/', bodyPartRoute);
 app.use('/', exerciseTypeRoute);
 app.use('/', setsRoute);
+app.use('/query', queriesRoute);
 
 
 const PORT = process.env.APP_PORT || 5000

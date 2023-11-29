@@ -2,13 +2,18 @@ POST http://localhost:5000/log-in
 Content-Type: application/json
 
 {
-  "username": "validUser",
-  "password": "validPassword"
+  "username": "testuser4",
+  "password": "testuser2"
 }
 
 ###
 
 GET http://localhost:5000/workout/id=1
+Accept: application/json
+
+###
+
+GET http://localhost:5000/allworkouts
 Accept: application/json
 
 ###

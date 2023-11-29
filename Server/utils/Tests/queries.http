@@ -1,0 +1,13 @@
+GET http://localhost:5000/query/weeklyWeightLifted
+Content-Type: application/json
+
+###
+
+POST http://localhost:5000/log-in
+Content-Type: application/json
+
+{
+  "username": "testuser4",
+  "password": "testuser2"
+}
+###

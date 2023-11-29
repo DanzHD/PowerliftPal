@@ -53,6 +53,7 @@ router.post('/log-in',
 );
 
 router.get('/log-in/success', (req, res) => {
+    console.log(req.user.username);
     res.json({username: req.user.username});
 });
 
