@@ -4,10 +4,11 @@ import Content from "./Components/Content.tsx";
 import Header from "./Components/Header.tsx";
 import RightSideBar from "./Components/RightSideBar.tsx";
 import Footer from "./Components/Footer.tsx";
-import {useAuthContext} from "../../../Contexts/AuthContext.tsx";
+import {useNavigate} from "react-router-dom";
+
 
 function Dashboard() {
-    const {logoutUser} = useAuthContext();
+    const navigate = useNavigate();
 
     return (
     <>
@@ -19,7 +20,7 @@ function Dashboard() {
                 <div>Home</div>
             </div>
 
-            <div className='navbar-logo '>
+            <div className='navbar-logo ' onClick={() => navigate('/workout')}>
 
                 <span className="material-symbols-outlined">
                     book_4
@@ -27,7 +28,7 @@ function Dashboard() {
                 <div>Workouts</div>
             </div>
 
-            <div className='navbar-logo'>
+            <div className='navbar-logo' onClick={() => navigate('/exercise')}>
 
                 <span className="material-symbols-outlined">
                     exercise
@@ -35,7 +36,7 @@ function Dashboard() {
                 <div>Exercises</div>
             </div>
 
-            <div className='navbar-logo'>
+            <div className='navbar-logo' onClick={() => navigate('/profile')}>
 
                 <span className="material-symbols-outlined">
                     person

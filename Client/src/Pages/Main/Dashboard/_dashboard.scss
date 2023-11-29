@@ -1,0 +1,33 @@
+@import '../../.././styles/_vars.scss';
+
+@media only screen and (min-width: $mobile-width) {
+
+  .sidebar-grid {
+    display: grid;
+    grid-template-areas:
+      'sidebar-heading'
+      'sidebar-content';
+    grid-template-rows: 5rem auto;
+  }
+
+  .sidebar.heading {
+    grid-area: sidebar-heading;
+    border-bottom: $secondary 1px solid;
+  }
+
+  .sidebar.content {
+    grid-area: sidebar-content;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .sidebar-item {
+    display: flex;
+    justify-content: space-between;
+    margin-right: 2rem;
+  }
+}
+
+b {
+  font-weight: 600;
+}
