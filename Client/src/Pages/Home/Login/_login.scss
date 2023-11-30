@@ -1,0 +1,102 @@
+@import '../../.././Styles/vars';
+
+@media only screen and (min-width: $mobile-width) {
+  .page-container {
+    height: 100vh;
+    width: 100vw;
+    display: grid;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .login-container {
+    display: grid;
+    grid-template-areas: 'login-header' 'login-form';
+    grid-template-rows: 1fr 5fr;
+    height: 25rem;
+    width: 20rem;
+    background-color: #E1CA96;
+    padding: 1.5rem;
+    font-size: 1em;
+    z-index: 9999;
+    border-radius: 15px;
+    box-shadow: 1px solid $secondary;
+
+  }
+
+  .login-header {
+    grid-area: login-header;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+
+}
+
+
+
+.login-container > form {
+  grid-area: login-form;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  gap: 1em;
+}
+.input-label-pair {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+form input {
+  outline: none;
+  height: 2.5em;
+  border: none;
+  border-radius: 10px;
+  padding: 0.5em;
+  box-sizing: border-box;
+  font-size: 1em;
+  opacity: 50%;
+}
+
+form input:focus {
+
+  filter: brightness(125%);
+}
+
+@media only screen and (max-width: $mobile-width) {
+  .page-container {
+    background-color: #E1CA96;
+    height: 100vh;
+    padding: 2em;
+    display: grid;
+    grid-template-rows: 1fr 4fr;
+    grid-template-columns: 1fr;
+
+
+  }
+
+  .login-container {
+    grid-row-start: 2;
+    display: grid;
+    grid-template-rows: 1fr 6fr;
+    grid-template-columns: 1fr;
+
+  }
+
+  .login-container > form {
+    grid-row-start: 2;
+    grid-column-start: 1;
+  }
+
+  .login-header {
+    grid-row-start: 1;
+    grid-column-start: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+
+}

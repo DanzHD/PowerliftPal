@@ -1,7 +1,8 @@
 import {useAuthContext} from "../../../Contexts/AuthContext.tsx";
 import {useNavigate} from "react-router-dom";
 import {useEffect, useRef} from "react";
-
+import './_login.scss'
+import Button from "../../../common/components/Button/Button.tsx";
 
 
 function Login() {
@@ -28,23 +29,44 @@ function Login() {
 
     return (
         <>
-            <form ref={loginForm} onSubmit={handleSubmit}>
-                <label>Username</label>
-                <input
-                    required
-                    type='text'
-                    name='username'
-                />
+            <div className='page-container'>
 
-                <label>Password</label>
-                <input
-                    required
-                    type='password'
-                    name='password'
-                />
+                <div className='login-container' >
 
-                <button type='submit' />
-            </form>
+                    <div className='login-header'>
+                        logo
+                    </div>
+
+                    <form ref={loginForm} onSubmit={handleSubmit}>
+                        <div className='input-label-pair'>
+
+                            <label>Username</label>
+                            <input
+                                required
+                                type='text'
+                                name='username'
+                                placeholder='Enter Username'
+                            />
+                        </div>
+
+                        <div className='input-label-pair'>
+
+                            <label>Password</label>
+                            <input
+                                required
+                                type='password'
+                                name='password'
+                                placeholder='Password'
+                            />
+                        </div>
+
+                        <Button type='submit' >Login</Button>
+                        <Button>Log in as example user</Button>
+                        <Button>Sign up</Button>
+                    </form>
+                </div>
+
+            </div>
         </>
     )
 

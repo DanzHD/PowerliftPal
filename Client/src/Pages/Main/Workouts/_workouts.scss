@@ -1,0 +1,31 @@
+@import '../../.././Styles/vars';
+
+.footer.workout {
+  position: sticky;
+  background-color: $secondary;
+  bottom: 0;
+
+}
+
+.main-content.workout {
+  display: grid;
+  grid-template-rows: repeat(2, 1fr);
+}
+
+@media only screen and (min-width: $mobile-width) {
+  .main.workout {
+    min-height: 100vh;
+    margin-left: $navbar-side-size;
+
+    grid-template-areas:
+    'header'
+    'main-content'
+    'footer';
+    grid-template-rows: 75px auto 75px;
+    box-sizing: border-box;
+  }
+
+  .main.workout > .header {
+    border-bottom: 1px solid $secondary;
+  }
+}
