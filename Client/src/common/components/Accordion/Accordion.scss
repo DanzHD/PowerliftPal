@@ -1,0 +1,30 @@
+@import '../../.././Styles/_vars.scss';
+
+.accordion-title {
+  display: flex;
+  justify-content: space-evenly;
+  padding: 0.5em;
+  box-sizing: border-box;
+
+}
+
+.accordion-title > span {
+  margin-left: auto;
+}
+
+
+
+.accordion-title:hover {
+  cursor: pointer;
+  filter: brightness(150%);
+}
+
+.accordion {
+  background-color: white;
+}
+
+.accordion-content {
+  padding: 0.5em;
+}
+
+
