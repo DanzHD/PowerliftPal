@@ -4,14 +4,21 @@ import {createContext, useContext, useEffect, useState} from "react";
 const APIContext = createContext('');
 
 export function APIContextProvider({ children }) {
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
     const [weeklyWorkouts, setWeeklyWorkouts] = useState(null);
     const [weeklyLiftWeight, setWeeklyLiftWeight] = useState(null);
+    const [muscleGroups, setMuscleGroups] = useState([]);
+    const [exercises, setExercises] = useState([]);
 
     // Set initial values
     useEffect(() => {
-        getWeeklyLiftWeight();
-        getWeeklyWorkouts();
+        Promise.all([
+        getWeeklyLiftWeight(),
+        getWeeklyWorkouts(),
+        getMuscleGroups(),
+        getExercises(),
+        ])
+
     }, []);
 
     const getWeeklyWorkouts = async () => {
@@ -57,12 +64,85 @@ export function APIContextProvider({ children }) {
             console.error(error);
         }
     }
+    const getMuscleGroups = async () => {
+        setLoading(true);
+        try {
+            const options = {
+                method: 'GET',
+                credentials: 'include',
+                headers: {
+                    'content-type': 'application/json'
+                }
+
+            }
+            let res = await fetch(`${BACKEND}/bodypart/readAll`, options);
+            let muscleGroups = await res.json();
+            muscleGroups = muscleGroups.map(key => {
+
+                return key['musclegroup'];
+            })
+            muscleGroups.sort();
+            setMuscleGroups(muscleGroups);
+
+
+        } catch(error) {
+            console.log(error);
+        }
+        setLoading(false);
+    }
+
+    const getExercises = async () => {
+        setLoading(true);
+        try {
+            const options = {
+                method: 'GET',
+                credentials: 'include',
+                headers: {
+                    'content-type': 'application/json'
+                }
+
+            }
+                let res = await fetch(`${BACKEND}/exercisetype/readAll`, options);
+                let exercises = await res.json();
+
+                setExercises(exercises);
+
+
+        } catch (err) {
+            console.error(err);
+        }
+        setLoading(false);
+    }
+
+    const createExercise = async ({exerciseInfo}) => {
+        try {
+
+            const options = {
+                method: 'POST',
+                credentials: 'include',
+                headers: {
+                    'content-type': 'application/json'
+                },
+                body: JSON.stringify(exerciseInfo)
+            }
+
+            await fetch(`${BACKEND}/exercisetype/create`, options);
+
+        } catch(err) {
+            console.log(err);
+        }
+
+
+    }
 
 
     const contextData = {
         weeklyWorkouts,
         weeklyLiftWeight,
-        getWeeklyWorkouts
+        getWeeklyWorkouts,
+        muscleGroups,
+        exercises,
+        createExercise
     }
 
     return (

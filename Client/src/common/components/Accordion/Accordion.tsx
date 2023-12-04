@@ -1,5 +1,6 @@
 import {useState} from "react";
 import './Accordion.scss'
+import Text from "../Text/Text.tsx";
 
 function Accordion({
     title,
@@ -15,7 +16,7 @@ function Accordion({
                     <div className='accordion-title' onClick={() => setIsActive(!isActive)}>
                         <div>
 
-                            {title}
+                            <Text subheading={true}>{title}</Text>
                         </div>
                         {isActive ?
                             <span className="material-symbols-outlined">
