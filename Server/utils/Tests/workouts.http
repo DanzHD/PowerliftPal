@@ -13,6 +13,12 @@ Accept: application/json
 
 ###
 
+GET http://localhost:5000/workouts/2023-12-10/2023-12-20
+Accept: application/json
+
+
+###
+
 GET http://localhost:5000/allworkouts
 Accept: application/json
 

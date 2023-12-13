@@ -42,7 +42,8 @@ export function AuthContextProvider({ children }) {
                 }),
                 credentials: 'include'
             }
-            let user = await fetch(`${BACKEND}/log-in`, options);
+            let res = await fetch(`${BACKEND}/log-in`, options);
+            let {username: user} = await res.json();
             setUser(user);
         } catch(error) {
             console.error(error);

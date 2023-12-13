@@ -3,7 +3,7 @@ const express = require('express');
 const router = express.Router();
 
 router.post('/exercisetype/create', async (req, res) => {
-   const {pr, name, muscleGroup} = req.body;
+   const {personalRecord, exerciseName, muscleGroup} = req.body;
    const username = req.user.username;
    try {
        if (!req.isAuthenticated()) {
@@ -11,7 +11,7 @@ router.post('/exercisetype/create', async (req, res) => {
        }
 
        await db.query(`INSERT INTO exercisetype 
-            VALUES ('${name}', NULLIF('${pr}', 'undefined')::decimal(2), '${muscleGroup}', '${username}')
+            VALUES ('${exerciseName}', NULLIF('${personalRecord}', 'undefined')::numeric(7, 2), '${muscleGroup}', '${username}')
         `);
        res.sendStatus(200);
    } catch (error) {
@@ -75,9 +75,29 @@ router.get('/exercisetype/readAll', async (req, res) => {
             return res.sendStatus(403);
         }
 
-        let exerciseTypes = await db.query(`SELECT * FROM exerciseType
-            WHERE 
-                username='${username}'
+        let exerciseTypes = await db.query(`
+            SELECT 
+                exercisetype.name, exercisetype.musclegroup, COALESCE(COUNT(sets.setnumber), 0) AS Totalsets, 
+                    COALESCE(SUM(sets.reps), 0) AS Totalreps, COALESCE(SUM(reps * weight), 0) AS totalWeight, 
+                    exercisetype.username, COALESCE(personalrecord, 0) AS personalrecord
+            FROM 
+                exercisetype LEFT JOIN exercise
+                ON 
+                    exercisetype.name = exercise.name AND
+                    exercisetype.username = exercise.username
+                LEFT JOIN sets 
+                ON 
+                    sets.exercisename = exercisetype.name AND sets.workoutid = exercise.workoutid
+            WHERE
+                exercisetype.username = '${username}'
+            GROUP BY 
+                exercisetype.name, 
+                musclegroup,
+                personalrecord,
+                exercisetype.username
+            HAVING
+                exercisetype.username = '${username}'
+
         `)
         res.json(exerciseTypes['rows']);
     } catch(error) {
@@ -85,5 +105,26 @@ router.get('/exercisetype/readAll', async (req, res) => {
         res.sendStatus(400);
     }
 });
+
+router.get(`/exercisetype/:muscleGroup`, async (req, res) => {
+    let username = req.user.username;
+
+    try {
+        if (!req.isAuthenticated()) {
+            return res.sendStatus(403);
+        }
+
+        let exercises = await db.query(`SELECT * FROM exercisetype
+            WHERE 
+                musclegroup = '${req.params.muscleGroup}' AND
+                username = '${username}'
+        `);
+        res.json(exercises['rows']);
+
+    } catch (error) {
+        console.log(error);
+        res.sendStatus(400);
+    }
+})
 
 module.exports = router;

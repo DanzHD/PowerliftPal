@@ -40,6 +40,32 @@ router.get('/allworkouts', async (req, res) => {
     }
 });
 
+router.get('/workouts/:startDate/:endDate', async (req, res) => {
+
+   try {
+       if (!req.isAuthenticated()) {
+           return res.sendStatus(403);
+       }
+
+       let {username} = req.user;
+       let {startDate, endDate} = req.params;
+
+       let workouts = await db.query(`SELECT * FROM workouts
+            WHERE 
+                workoutdate >= '${startDate}' AND
+                workoutdate <= '${endDate}' AND
+                username = '${username}'
+       `)
+
+
+       return res.json(workouts['rows']);
+
+   } catch (error) {
+       console.log(error);
+       res.sendStatus(400);
+   }
+});
+
 router.post('/workout/create', async (req, res) => {
    let { date, notes } = req.body;
 

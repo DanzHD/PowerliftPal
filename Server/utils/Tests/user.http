@@ -34,8 +34,8 @@ POST http://localhost:5000/sign-up
 Content-Type: application/json
 
 {
-  "username": "validUser",
-  "password": "validPassword"
+  "username": "SampleUser",
+  "password": "Password"
 }
 
 ###

@@ -5,23 +5,28 @@ function Text({
     subheading,
     className,
     children,
-    styles
+    styles,
+    centered,
+    onClick,
+    value,
+    keyValue
 }){
 
     const computedClassName = cx(
         'text',
-        className
+        className,
+        centered
     )
 
     if (heading) {
-        return <h1 style={styles} className={computedClassName}>{children}</h1>
+        return <h1 key={keyValue} value={value} onClick={onClick} style={styles} className={computedClassName}>{children}</h1>
     }
 
     if (subheading) {
-        return <h2 style={styles} className={computedClassName}>{children}</h2>
+        return <h2 key={keyValue} value={value} onClick={onClick} style={styles} className={computedClassName}>{children}</h2>
     }
 
-    return <p style={styles} className={computedClassName}>{children}</p>
+    return <p key={keyValue} value={value} onClick={onClick} style={styles} className={computedClassName}>{children}</p>
     
 }
 

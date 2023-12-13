@@ -9,7 +9,7 @@ router.get('/weeklyWeightLifted', async (req, res) => {
            return res.sendStatus(403);
        }
        const sevenDaysAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
-       let totalLifted = await db.query(`SELECT SUM(reps * weight) AS totalWeight
+       let totalLifted = await db.query(`SELECT COALESCE(SUM(reps * weight), 0) AS totalWeight
             FROM sets INNER JOIN exercise 
                 ON 
                     sets.exerciseName = exercise.name AND

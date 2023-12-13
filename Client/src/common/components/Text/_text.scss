@@ -1,11 +1,15 @@
 @import '../../../Styles/vars';
 
 @mixin text {
-  font-weight: 400;
+  font-weight: 500;
 }
 
 @mixin header {
   font-weight: 800;
+}
+
+@mixin centered {
+  text-align: center;
 }
 
 h1.text {
@@ -21,6 +25,7 @@ h1.text {
 h2.text {
   @include header;
   font-size: 24px;
+  margin: 0;
 
   @media only screen and (max-width: $mobile-width) {
     font-size: 18px;
@@ -29,4 +34,11 @@ h2.text {
 
 p.text {
   @include text;
+  margin: 0;
+  display: inline-block;
 }
+
+.centered {
+  @include centered;
+}
+
