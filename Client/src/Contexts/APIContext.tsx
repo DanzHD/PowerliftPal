@@ -147,8 +147,6 @@ export function APIContextProvider({ children }) {
             let res = await fetch(`${BACKEND}/workouts/${fromDate}/${toDate}`, options);
             return await res.json();
 
-
-
         } catch (error) {
             console.error(error);
         }
@@ -168,6 +166,23 @@ export function APIContextProvider({ children }) {
             let res = await fetch(`${BACKEND}/allworkouts`, options);
             return await res.json();
 
+        } catch (err) {
+            console.error(err);
+        }
+    }
+
+    const getExercisesFromWorkout = async ({workoutID}) => {
+        try {
+            const options: Object = {
+                method: 'GET',
+                credentials: 'include',
+                headers: {
+                    'content-type': 'application/json'
+                }
+            }
+
+            let res = await fetch(`${BACKEND}/exercise/${workoutID}`, options);
+            return await res.json();
 
 
         } catch (err) {
@@ -185,7 +200,8 @@ export function APIContextProvider({ children }) {
         exercises,
         createExercise,
         getWorkoutsByDate,
-        getAllWorkouts
+        getAllWorkouts,
+        getExercisesFromWorkout
     }
 
     return (
