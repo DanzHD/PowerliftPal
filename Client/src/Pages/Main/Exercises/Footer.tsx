@@ -1,7 +1,7 @@
 import Button from "../../../common/components/Button/Button.tsx";
 import Text from "../../../common/components/Text/Text.tsx";
 import {useAPIContext} from "../../../Contexts/APIContext.tsx";
-import button from "../../../common/components/Button/Button.tsx";
+import './_exercise.scss'
 
 function Footer({createExerciseRef}) {
 
@@ -19,11 +19,9 @@ function Footer({createExerciseRef}) {
         e.preventDefault();
         const exerciseInfo = {exerciseName: e.target.name.value,
             personalRecord: e.target.personalRecord.value, muscleGroup: e.target.muscleGroup.value}
-        console.log(exerciseInfo)
         createExercise({exerciseInfo})
 
     }
-
 
     return (
         <>

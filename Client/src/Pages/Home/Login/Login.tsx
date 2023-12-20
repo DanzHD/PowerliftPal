@@ -27,6 +27,14 @@ function Login() {
         loginUser(userInfo);
     }
 
+    const handleExampleUserSubmit = (e) => {
+        e.preventDefault();
+        const username = 'SampleUser';
+        const password = 'Password';
+        const userInfo = {username: username, password: password}
+        loginUser(userInfo);
+    }
+
     return (
         <>
             <div className='page-container'>
@@ -61,8 +69,8 @@ function Login() {
                         </div>
 
                         <Button type='submit' >Login</Button>
-                        <Button>Log in as example user</Button>
-                        <Button>Sign up</Button>
+                        <Button type='button' onClick={handleExampleUserSubmit}>Log in as example user</Button>
+                        <Button type='button'>Sign up</Button>
                     </form>
                 </div>
 

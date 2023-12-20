@@ -19,7 +19,6 @@ function Content() {
                     let exercise = exercises.filter(exercise => exercise['musclegroup'] === muscleGroup)
                     let accordionContent = DisplayExercise({exercises: exercise, dialogRef});
 
-
                     return <Accordion title={muscleGroup} key={muscleGroup} content={accordionContent}></Accordion>
                 })}
 
@@ -30,7 +29,7 @@ function Content() {
 
 function DisplayExercise({exercises, dialogRef}) {
     
-    function handleOpenModal(e) {
+    function handleOpenModal(e: Object) {
 
         let key: String = e.target.getAttribute('value');
         dialogRef.current[key].showModal();

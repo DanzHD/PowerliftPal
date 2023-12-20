@@ -8,6 +8,7 @@ function RightSideBar() {
 
     const {weeklyWorkouts, weeklyLiftWeight} = useAPIContext();
 
+
     return (
         <>
             <div className='sidebar-grid'>

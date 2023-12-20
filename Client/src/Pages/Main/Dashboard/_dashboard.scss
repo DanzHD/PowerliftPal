@@ -1,6 +1,26 @@
 @import '../../.././styles/_vars.scss';
 
 @media only screen and (min-width: $mobile-width) {
+  .main.dashboard {
+    min-height: 100vh;
+    grid-template-columns:repeat(3, 1fr);
+    grid-template-areas:
+      'header header header'
+      'main-content main-content right-sidebar'
+      'footer footer footer';
+    grid-template-rows: 75px auto 100px;
+    margin-left: $navbar-side-size;
+    margin-right: 5rem;
+  }
+
+  .main > .main-content.dashboard {
+    border-top: 1px solid $secondary;
+
+  }
+
+  .main > .right-sidebar.dashboard {
+    margin-right: 5rem;
+  }
 
   .sidebar-grid {
     display: grid;
@@ -26,8 +46,18 @@
     justify-content: space-between;
     margin-right: 2rem;
   }
+
 }
 
 b {
   font-weight: 600;
+}
+
+@media only screen and (max-width: $mobile-width) {
+  .main.dashboard {
+    margin-bottom: $navbar-bottom-size;
+  }
+  .main > .header.dashboard {
+    border-bottom: 1px solid $secondary;
+  }
 }

@@ -5,7 +5,7 @@ import Header from "./Components/Header.tsx";
 import RightSideBar from "./Components/RightSideBar.tsx";
 import Footer from "./Components/Footer.tsx";
 import {useNavigate} from "react-router-dom";
-
+import './_dashboard.scss'
 
 function Dashboard() {
     const navigate = useNavigate();
@@ -46,7 +46,7 @@ function Dashboard() {
 
         </Navbar>
 
-        <Layout content={Content()} header={Header()} sideBar={RightSideBar()} footer={Footer()} >
+        <Layout classNames='dashboard' content={Content()} header={Header()} sideBar={RightSideBar()} footer={Footer()} >
         </Layout>
 
 

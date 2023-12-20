@@ -1,5 +1,14 @@
 @import '../../.././Styles/vars';
 
+.exercise-name {
+  padding-left: 1em;
+  cursor: pointer;
+  color: $success;
+  text-decoration: underline;
+  font-size: 1em;
+  box-sizing: border-box;
+}
+
 @media only screen and (min-width: $mobile-width) {
 
   .main.exercise {
@@ -8,7 +17,7 @@
     'header'
     'main-content'
     'footer';
-    grid-template-rows: 1fr 3fr 75px;
+    grid-template-rows: 200px 3fr 75px;
     min-height: 100vh;
 
   }
@@ -22,7 +31,7 @@
 
   .main > .exercise.header > .logo {
     grid-row-start: 1;
-    background-color: $primary;
+    background-color: $secondary;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -40,8 +49,7 @@
     grid-row-start: 2;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-
-     margin-bottom: 75px;
+    margin-bottom: 75px;
   }
 
   .main > .footer.exercise {
@@ -50,8 +58,6 @@
     display: flex;
     justify-content: center;
     align-items: center;
-
-
     bottom: 0;
   }
 
@@ -59,49 +65,65 @@
     width: 10em;
   }
 
-
   .accordion-container {
     grid-column-start: 2;
   }
 
-  .exercise-name {
-    padding-left: 1em;
-    cursor: pointer;
-    color: $success;
-    text-decoration: underline;
-    font-size: 1em;
-    box-sizing: border-box;
+
+}
+
+@media only screen and (max-width: $mobile-width) {
+  .main.exercise {
+    margin-bottom: $navbar-bottom-size;
+    grid-template-areas:
+    'header'
+    'main-content'
+    'footer';
+    grid-template-rows: 100px 2fr 75px;
+    min-height: 100vh;
 
   }
-  dialog {
 
-    border: none;
-    width: 20rem;
-    height: 20rem;
-    border-radius: 10px;
+  .main > .main-content.exercise {
+    width: 100vw;
+
   }
-  .modal-container {
-    height: 100%;
-    width: 100%;
+
+  .main > .header.exercise {
     display: grid;
-    grid-template-rows: 1fr 3fr 1fr;
+    grid-template-rows: 75px auto;
   }
 
-  .modal-header {
+  .main > .header.exercise > .logo {
+    background-color: $secondary;
     display: flex;
     justify-content: center;
     align-items: center;
   }
 
-  .modal-content {
+  .main > .header.exercise > .section {
     display: flex;
-    flex-direction: column;
+    justify-content: center;
+    align-items: center;
   }
 
-  .modal-footer {
+  .main > .main-content.exercise {
+    margin-bottom: 75px;
+  }
+
+
+  .main > .footer.exercise {
     display: flex;
-    justify-content: flex-end;
     align-items: flex-end;
+    justify-content: center;
+
+  }
+
+  .main > .exercise.footer > .button {
+    margin-bottom: 75px;
+    height: 2em;
+    width: 10em;
+
   }
 
 
