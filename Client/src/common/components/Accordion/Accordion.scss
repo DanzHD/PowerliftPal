@@ -2,7 +2,7 @@
 
 .accordion-title {
   display: flex;
-  justify-content: space-evenly;
+  justify-content: center;
   padding: 0.5em;
   box-sizing: border-box;
 
@@ -13,10 +13,9 @@
 }
 
 
-
 .accordion-title:hover {
   cursor: pointer;
-  filter: brightness(150%);
+
 }
 
 .accordion {

@@ -2,7 +2,6 @@ import Navbar from "../../../common/components/navbar/Navbar.tsx";
 import {useNavigate} from "react-router-dom";
 import Layout from "../../../common/components/Layout/Layout.tsx";
 import Header from "./Header.tsx";
-
 import Footer from "./Footer.tsx";
 import Content from "./Content.tsx";
 import './_workouts.scss'

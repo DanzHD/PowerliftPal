@@ -16,7 +16,6 @@ router.get('/workout/:id', async (req, res) => {
        `);
        return res.json(workouts['rows'][0]);
 
-
    } catch(error) {
        console.log(error);
        res.sendStatus(400);
@@ -32,6 +31,7 @@ router.get('/allworkouts', async (req, res) => {
         let workouts = await db.query(`SELECT * FROM workouts
             WHERE 
                 username='${req.user.username}'
+            ORDER BY workoutdate DESC
         `)
         return res.json(workouts['rows']);
     } catch(error) {

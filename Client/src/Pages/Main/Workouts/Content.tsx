@@ -1,19 +1,41 @@
 import Text from "../../../common/components/Text/Text.tsx";
 import Button from "../../../common/components/Button/Button.tsx";
 import '../../../Styles/_vars.scss'
+import '../../../common/components/Modal/_Modal.scss'
+import './_workouts.scss'
 import {Fragment, useEffect, useRef, useState} from "react";
 import {useAPIContext} from "../../../Contexts/APIContext.tsx";
 import {useNavigate} from "react-router-dom";
+import Accordion from "../../../common/components/Accordion/Accordion.tsx";
+import Select from "react-select";
+
 
 function Content() {
 
     const navigate = useNavigate();
+    const logWorkoutRef = useRef(null);
 
     const [displayDateSearch, setDisplayDateSearch] = useState(false);
     const [workouts, setWorkouts] = useState([]);
-    let [loading, setLoading] = useState(false);
-    let [invalidFormInput, setInvalidFormInput] = useState(false);
-    let {getWorkoutsByDate, getAllWorkouts} = useAPIContext();
+    const [loading, setLoading] = useState(false);
+    const [invalidFormInput, setInvalidFormInput] = useState(false);
+    const {getWorkoutsByDate, getAllWorkouts, createWorkoutWithExercises} = useAPIContext();
+
+    const [exerciseSets, setExerciseSets] = useState([]);
+    const [addingExercise, setAddingExercise] = useState(false);
+    const [newSelectedExercises, setNewSelectedExercises] = useState([]);
+    const {exercises} = useAPIContext();
+    const [selectingDate, setSelectingDate] = useState(false);
+
+    const handleOpenModal = () => {
+        logWorkoutRef.current.showModal()
+    }
+
+    const handleCloseModal = () => {
+        setExerciseSets([]);
+        logWorkoutRef.current.close();
+    }
+
 
     useEffect(() => {
         (async function () {
@@ -47,16 +69,13 @@ function Content() {
             }
 
             let w = await getWorkoutsByDate({fromDate, toDate});
-
             setWorkouts(w);
-
 
         } catch (err) {
             console.error(err)
         } finally {
             setLoading(false);
         }
-
     }
 
     const handleResetFilters = async () => {
@@ -74,6 +93,18 @@ function Content() {
         }
     }
 
+    const addSet = (exercise) => {
+
+        let exerciseIndex: number = exerciseSets.findIndex(exerciseSet => Object.keys(exerciseSet).toString() === exercise);
+
+        let setNumber: number = exerciseSets[exerciseIndex][exercise].length + 1;
+
+        let exerciseSetsCopy = exerciseSets.slice();
+        exerciseSetsCopy[exerciseIndex][exercise].push({setNumber: setNumber, reps: 5, weight: 100, intensity: 1, warmup: false});
+
+        setExerciseSets(exerciseSetsCopy);
+
+    }
 
     return (
         <>
@@ -121,7 +152,6 @@ function Content() {
                                     <Button
                                         className='workout-button'
                                         type='submit'
-
                                     >
                                         Search
                                     </Button>
@@ -141,6 +171,68 @@ function Content() {
                     <div className='line'></div>
 
                 </div>
+
+                {!loading &&
+                    <Button
+                        styles={
+                            {
+                                marginBottom: '2em',
+                                width: '10em',
+                                marginLeft: 'auto',
+                                marginRight: 'auto',
+                                height: '3em',
+                                backgroundColor: '#BF90EE'
+                            }
+                        }
+                        className='workout-button'
+                        onClick={handleOpenModal}
+                    >
+                        Add Workout
+                    </Button>}
+
+                <dialog className='log-workout' ref={logWorkoutRef}>
+                    <div className='modal-container log-workout'>
+
+                        {
+                            selectingDate ?
+                                <WorkoutDateModal
+                                    setSelectingDate={setSelectingDate}
+                                    setLoading={setLoading}
+                                    exerciseSets={exerciseSets}
+                                    setExerciseSets={setExerciseSets}
+                                    handleCloseModal={handleCloseModal}
+                                    createWorkoutWithExercises={createWorkoutWithExercises}
+                                    getallWorkouts={getAllWorkouts}
+                                    setWorkouts={setWorkouts}
+
+
+                                /> :
+
+                                addingExercise ?
+                                    <AddExercisesModal
+                                        setAddingExercise={setAddingExercise}
+                                        exercises={exercises}
+                                        exercisesSelected={exerciseSets.map(exerciseSet => Object.keys(exerciseSet).toString())}
+                                        setExercisesSelected={setExerciseSets}
+                                        newSelectedExercises={newSelectedExercises}
+                                        setNewSelectedExercises={setNewSelectedExercises}
+                                        setAddingExercises={setAddingExercise}
+
+
+                                    /> :
+                                    <AddingWorkoutsModal
+                                        setAddingExercise={setAddingExercise}
+                                        exerciseSets={exerciseSets}
+                                        setExerciseSets={setExerciseSets}
+                                        addSet={addSet}
+                                        handleCloseModal={handleCloseModal}
+                                        setLoading={setLoading}
+                                        setSelectingDate={setSelectingDate}
+                                    />
+                        }
+                    </div>
+                </dialog>
+
                 <div style={{display: 'flex', flexDirection: 'column', gap: '10px'}}>
                     {
                         (!loading) ? workouts.map(workout => {
@@ -200,6 +292,296 @@ function Content() {
     )
 }
 
+function AddingWorkoutsModal({
+    handleCloseModal,
+    exerciseSets,
+    setExerciseSets,
+    addSet,
+    setAddingExercise,
+    setLoading,
+    setSelectingDate
+}) {
+    const handleSetChange = (e, exercise, setNumber, property) => {
+        try {
 
+            let exerciseChange = exerciseSets.find(exerciseSet => Object.keys(exerciseSet).toString() === exercise);
+
+            setExerciseSets(exerciseSets => {
+
+                exerciseChange[exercise][setNumber][property] = e.target.value;
+                return exerciseSets;
+            });
+        } catch (err) {
+            console.error(err)
+        }
+
+    }
+
+
+    return (
+        <>
+            <div className='modal-header log-workout' style={{display: 'flex', justifyContent: 'space-between'}}>
+                <span onClick={handleCloseModal} className="material-symbols-outlined" style={{fontSize: '32px', cursor: 'pointer'}}>
+                    close
+                </span>
+
+                <Text heading={true}>Log Workout</Text>
+                <span
+                    className="material-symbols-outlined"
+                    style={{fontSize: '32px', cursor: 'pointer'}}
+                    onClick={() => setSelectingDate(true)}
+                >
+                    done
+                </span>
+
+            </div>
+
+
+            <div className='modal-content'>
+                <div className='line' />
+
+                {
+                    exerciseSets.map((exerciseSet, i) => {
+                        let exercise = Object.keys(exerciseSet).toString();
+
+                        return (
+                            <Fragment key={exercise}>
+                                <div className='exercise-entry'>
+                                    <Accordion
+                                        title= {
+
+                                            <>
+                                                <span style={{ color: "lightblue"}}>{i+1}</span>
+                                                <span> {exercise} </span>
+                                            </>
+
+                                        }
+                                        content={
+
+                                            <>
+                                                <form id='exerciseForm'>
+
+                                                    <div className='set-container'>
+                                                        <div className='set-entry'>
+
+                                                            <Text>Set</Text>
+                                                            <Text>Reps</Text>
+                                                            <Text>Weight</Text>
+                                                            <Text>Intensity</Text>
+                                                            <Text>Warmup Set</Text>
+                                                        </div>
+                                                        {
+
+                                                            exerciseSet[exercise].map((set, i) => {
+
+                                                                return (
+
+                                                                    <div className='set-entry' key={set['setNumber']}>
+                                                                        <div>{set['setNumber']}</div>
+                                                                        <input
+                                                                            onChange={(e) =>
+                                                                                handleSetChange(e, exercise, i, 'reps')}
+                                                                            defaultValue={set['reps']}
+                                                                            type='number'
+                                                                           name='reps'/>
+                                                                        <input
+                                                                            onChange={e =>
+                                                                                handleSetChange(e, exercise, i, 'weight')}
+                                                                           defaultValue={set['weight']}
+                                                                           name='weight'
+                                                                           type='number'
+                                                                        />
+                                                                        <select
+                                                                            onChange={(e) =>
+                                                                                handleSetChange(e, exercise, i, 'intensity')}
+                                                                            name='intensity'
+                                                                            defaultValue={set['intensity']}>
+
+                                                                            <option value='1'>1</option>
+                                                                            <option value='2'>2</option>
+                                                                            <option value='3'>3</option>
+                                                                            <option value='4'>4</option>
+                                                                            <option value='5'>5</option>
+
+                                                                        </select>
+                                                                        <input
+                                                                            onChange={(e) =>
+                                                                                handleSetChange(e, exercise, i, 'warmup')}
+                                                                            defaultValue={set['warmup']}
+                                                                            name='warmup'
+                                                                            type='checkbox'
+                                                                        />
+                                                                    </div>
+
+
+                                                                )
+                                                            })
+                                                        }
+                                                        <Text
+                                                            onClick={() => addSet(Object.keys(exerciseSet).toString())}
+                                                            className='add-set-button'>
+                                                            Add Set
+                                                        </Text>
+                                                    </div>
+                                                </form>
+                                            </>
+
+                                        }
+                                    />
+
+                                </div>
+                            </Fragment>
+                        )
+                    })
+                }
+
+
+                <Button onClick={() => setAddingExercise(true)}>Add Exercise</Button>
+            </div>
+
+        </>
+    )
+}
+
+function AddExercisesModal({
+    setAddingExercise,
+    exercises,
+    exercisesSelected,
+    setExercisesSelected,
+    newSelectedExercises,
+    setNewSelectedExercises,
+    setAddingExercises
+}) {
+
+    const exerciseOptions = exercises.filter(exercise => {
+
+        return !exercisesSelected.includes(exercise['name'])
+    });
+
+    const handleSelectionChange = (selectedOption) => {
+        setNewSelectedExercises(selectedOption);
+
+    }
+
+    const handleSubmit = () => {
+        const newSelectedExercisesCopy = newSelectedExercises.map(exercise => {
+            return {[exercise['value']]: []}
+        });
+
+        setExercisesSelected(exercisesSelected => [...exercisesSelected, ...newSelectedExercisesCopy]);
+        setNewSelectedExercises([])
+        setAddingExercises(false);
+    }
+
+    return (
+        <>
+            <div className='modal-header log-workout' style={{display: 'flex', justifyContent: 'space-between'}}>
+                <span onClick={() => setAddingExercise(false)} className="material-symbols-outlined" style={{cursor: 'pointer'}}>
+                    arrow_back
+                </span>
+
+                <Text heading={true}>Add Exercises</Text>
+                <span
+                    className="material-symbols-outlined"
+                    style={{fontSize: '32px', cursor: 'pointer'}}
+                    onClick={handleSubmit}
+                >
+                    done
+                </span>
+
+            </div>
+
+            <div className='modal-content'>
+                <div className='line' />
+                <Text subheading={true} styles={{textAlign: 'center'}}>Add Exercises</Text>
+                <Select
+                    options={exerciseOptions.map(exercise => {
+                        return {value: exercise['name'], label: exercise['name']}
+                    })}
+                    isMulti={true}
+                    isClearable={true}
+                    isSearchable={true}
+                    onChange={handleSelectionChange}
+
+                />
+
+            </div>
+
+
+        </>
+    )
+}
+
+function WorkoutDateModal({
+    setLoading,
+    handleCloseModal,
+    setSelectingDate,
+    exerciseSets,
+    createWorkoutWithExercises,
+    getallWorkouts,
+    setWorkouts
+}) {
+    const handleFormSubmit = async (e) => {
+        try {
+            e.preventDefault();
+            setLoading(true);
+            handleCloseModal();
+            let date = e.target.workoutDate.value;
+            let notes = e.target.notes.value;
+
+            await createWorkoutWithExercises({exerciseSets, date, notes});
+
+
+        } catch (err) {
+            console.error(err)
+        } finally {
+            setSelectingDate(false);
+            setWorkouts(await getallWorkouts());
+            setLoading(false);
+        }
+    }
+
+    return (
+        <>
+            <div className='modal-header log-workout' style={{display: 'flex', justifyContent: 'space-between'}}>
+                <span onClick={() => setSelectingDate(false)} className="material-symbols-outlined" style={{cursor: 'pointer'}}>
+                    arrow_back
+                </span>
+
+                <Text subheading={true}>Add Date</Text>
+
+                <button
+                    className="material-symbols-outlined"
+                    style={{fontSize: '32px', cursor: 'pointer', border: "none", backgroundColor: 'inherit'}}
+                    type='submit'
+                    form='workoutDateForm'
+                >
+                    done
+                </button>
+
+            </div>
+
+            <div className='modal-content' >
+                <div className='line' />
+                <form onSubmit={handleFormSubmit} id='workoutDateForm'>
+                    <div className='workout-input'>
+                        <label>Date</label>
+                        <input name='workoutDate' id='workout-date' type='date' required/>
+                    </div>
+
+                    <div className='workout-input' style={{marginBottom: '3em'}}>
+                        <label>Notes</label>
+                        <input name='notes' type='text' placeholder='Enter Notes'/>
+                    </div>
+
+                    <Button type='submit'> Log Workout! </Button>
+                </form>
+
+            </div>
+
+
+        </>
+    )
+}
 
 export default Content;

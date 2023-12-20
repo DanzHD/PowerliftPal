@@ -27,4 +27,47 @@ router.get('/weeklyWeightLifted', async (req, res) => {
    }
 });
 
+router.post('/createFullWorkout', async (req, res) => {
+    const {exerciseSets, date, notes} = req.body;
+    const username = req.user.username;
+    try {
+
+        const response = await db.query(`INSERT INTO workouts
+            VALUES 
+                (DEFAULT, '${date}', '${notes}', '${username}')
+            RETURNING workoutID
+        `)
+        const workoutID = response['rows'][0]['workoutid'];
+
+        await Promise.all(exerciseSets.map(async (exerciseSet) => {
+            let exerciseName = Object.keys(exerciseSet).toString();
+            let sets = Object.values(exerciseSet)[0];
+
+            // Insert the exercises
+            await db.query(`INSERT INTO exercise 
+                VALUES
+                    (${workoutID}, '${exerciseName}', '${username}');
+            `);
+
+            // Connect the sets to the exercises
+            await Promise.all(sets.map(async (set) => {
+                await db.query(`INSERT INTO sets
+                    VALUES
+                        (${set['warmup']}, ${set['reps']}, ${set['intensity']}, '${workoutID}', '${exerciseName}', 
+                            ${set['setNumber']}, ${set['weight']});
+                `)
+            }))
+        }))
+
+
+
+        res.sendStatus(200);
+
+    } catch (error) {
+        console.log(error);
+        return res.sendStatus(400);
+    }
+});
+
+
 module.exports = router;

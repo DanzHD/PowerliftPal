@@ -190,6 +190,30 @@ export function APIContextProvider({ children }) {
         }
     }
 
+    const createWorkoutWithExercises = async ({exerciseSets, date, notes}) => {
+        try {
+            const options: Object = {
+                method: 'POST',
+                credentials: 'include',
+                headers: {
+                    'content-type': 'application/json'
+                },
+                body: JSON.stringify({
+                    exerciseSets: exerciseSets,
+                    date: date,
+                    notes: notes
+                })
+            }
+
+            await fetch(`${BACKEND}/query/createFullWorkout`, options);
+
+
+
+        } catch (err) {
+            console.error(err);
+        }
+    }
+
 
 
     const contextData = {
@@ -201,7 +225,8 @@ export function APIContextProvider({ children }) {
         createExercise,
         getWorkoutsByDate,
         getAllWorkouts,
-        getExercisesFromWorkout
+        getExercisesFromWorkout,
+        createWorkoutWithExercises
     }
 
     return (

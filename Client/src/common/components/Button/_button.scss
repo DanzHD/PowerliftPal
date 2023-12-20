@@ -1,0 +1,19 @@
+@import "../../.././Styles/vars";
+
+
+.button {
+  height: 2em;
+  width: 100%;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 10px;
+  font-weight: 700;
+  background: transparent;
+  padding: 2px;
+  box-sizing: border-box;
+}
+
+.button:hover {
+  filter: brightness(150%);
+  background-color: #40e8c0;
+}

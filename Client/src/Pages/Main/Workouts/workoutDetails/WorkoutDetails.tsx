@@ -1,4 +1,4 @@
-import {useNavigate, useParams, useSearchParams} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import Navbar from "../../../../common/components/navbar/Navbar.tsx";
 import Layout from "../../../../common/components/Layout/Layout.tsx";
 import Header from "../Header.tsx";

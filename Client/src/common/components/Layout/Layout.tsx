@@ -1,33 +1,48 @@
 import './_layout.scss';
-import {useAuthContext} from "../../../Contexts/AuthContext.tsx";
+import cx from "classnames";
 function Layout({
     header: Header,
     content: Content,
     sideBar: SideBar,
-    footer: Footer
+    footer: Footer,
+    classNames
 }) {
 
-    const {logoutUser} = useAuthContext();
+    const computedClassNamesMain = cx('main', classNames);
+    const computedClassNamesHeader = cx('header', classNames);
+    const computedClassNamesContent = cx('main-content', classNames);
+    const computedClassNamesRightSideBar = cx('right-sidebar', classNames);
+    const computedClassNamesFooter = cx('footer', classNames);
+
 
     return (
         <>
-            <div className='main'>
-                <div className='header'>
-                    {Header}
-                </div>
+            <div className={computedClassNamesMain}>
+                { Header &&
+                    <div className={computedClassNamesHeader}>
+                        {Header}
+                    </div>
+                }
+                {Content &&
+                    <div className={computedClassNamesContent}>
 
-                <div className='main-content'>
-                    {Content}
-                </div>
+                        {Content}
+                    </div>
+                }
 
-                <div className='right-sidebar'>
-                    {SideBar}
-                </div>
+                {SideBar &&
+                    <div className={computedClassNamesRightSideBar}>
+                        {SideBar}
+                    </div>
+                }
 
-                <div className='footer'>
-                    {Footer}
-                </div>
+                {Footer &&
+                    <div className={computedClassNamesFooter}>
+                        {Footer}
+                    </div>
+                }
             </div>
+
         </>
     )
 }
