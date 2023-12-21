@@ -9,7 +9,7 @@ function Header() {
                 <Text heading={true}>PowerliftPal</Text>
             </div>
 
-            <Text className='section' heading={true}>Workouts</Text>
+            <Text className='section invisible' heading={true}>Workouts</Text>
         </>
     )
 }

@@ -9,7 +9,6 @@ import {useNavigate} from "react-router-dom";
 import Accordion from "../../../common/components/Accordion/Accordion.tsx";
 import Select from "react-select";
 
-
 function Content() {
 
     const navigate = useNavigate();
@@ -99,24 +98,9 @@ function Content() {
 
             <div className='workouts-list'>
                 <div className='workouts-list-header'>
-                    <Text subheading={true}>My Workouts</Text>
+                    <Text styles={{textAlign: 'center'}} subheading={true}>My Workouts</Text>
                     <Button
-                        styles={
-                            {
-                                borderRadius: '0',
-                                padding: '10px',
-                                fontSize: '13px',
-                                fontWeight: '300',
-                                border: 'none',
-                                color: 'white',
-                                backgroundColor: '#1ab394',
-                                marginLeft: 'auto',
-                                width: '150px',
-                                display: 'flex',
-                                justifyContent: 'center',
-                                alignItems: 'center'
-                            }
-                        }
+                        styles={{marginLeft: 'auto', marginRight: 'auto'}}
                         onClick={() => setDisplayDateSearch(!displayDateSearch)}
                     >
                         Search by date range
@@ -156,9 +140,9 @@ function Content() {
                             </form>
                         </div>
                     }
-                    <div className='line'></div>
 
                 </div>
+                <div className='line'></div>
 
                 {!loading &&
                     <Button
