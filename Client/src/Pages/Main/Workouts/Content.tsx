@@ -98,9 +98,9 @@ function Content() {
 
             <div className='workouts-list'>
                 <div className='workouts-list-header'>
-                    <Text styles={{textAlign: 'center'}} subheading={true}>My Workouts</Text>
+                    <Text className='workouts-title' subheading={true}>My Workouts</Text>
                     <Button
-                        styles={{marginLeft: 'auto', marginRight: 'auto'}}
+                        className='workouts-title-button'
                         onClick={() => setDisplayDateSearch(!displayDateSearch)}
                     >
                         Search by date range
