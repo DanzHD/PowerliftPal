@@ -15,8 +15,6 @@ export function useAuthContext() {
     return context;
 }
 
-
-
 export function AuthContextProvider({ children }) {
     const [loading, setLoading] = useState(true);
     const [user, setUser] = useState(false);
@@ -64,7 +62,7 @@ export function AuthContextProvider({ children }) {
                 },
                 credentials: 'include'
             }
-            const res = await fetch(`${BACKEND}/log-out`, options);
+            await fetch(`${BACKEND}/log-out`, options);
 
             setUser(null);
         } catch(error) {
@@ -86,7 +84,7 @@ export function AuthContextProvider({ children }) {
                 credentials: 'include'
             }
             const res = await fetch(`${BACKEND}/username`, options);
-            const {username} = await res.json(res);
+            const {username} = await res.json();
 
             setUser(username);
 

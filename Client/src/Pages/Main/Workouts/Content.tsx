@@ -38,6 +38,7 @@ function Content() {
 
 
     useEffect(() => {
+
         (async function () {
             setLoading(true)
             setWorkouts(await getAllWorkouts());
@@ -292,8 +293,14 @@ function AddingWorkoutsModal({
             let exerciseChange = exerciseSets.find(exerciseSet => Object.keys(exerciseSet).toString() === exercise);
 
             setExerciseSets(exerciseSets => {
+                if (property === 'warmup') {
 
-                exerciseChange[exercise][setNumber][property] = e.target.value;
+                    exerciseChange[exercise][setNumber][property] = e.target.checked;
+
+                } else {
+
+                    exerciseChange[exercise][setNumber][property] = e.target.value;
+                }
                 return exerciseSets;
             });
         } catch (err) {
@@ -418,9 +425,10 @@ function AddingWorkoutsModal({
                                                                         <input
                                                                             onChange={(e) =>
                                                                                 handleSetChange(e, exercise, i, 'warmup')}
-                                                                            defaultValue={set['warmup']}
+                                                                            value={set['warmup']}
                                                                             name='warmup'
                                                                             type='checkbox'
+                                                                            defaultChecked={set['warmup']}
                                                                         />
                                                                     </div>
 

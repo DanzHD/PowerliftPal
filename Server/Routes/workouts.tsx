@@ -6,6 +6,7 @@ router.get('/workout/:id', async (req, res) => {
 
    try {
        if (!req.isAuthenticated()) {
+
            return res.sendStatus(403);
        }
 
@@ -14,6 +15,11 @@ router.get('/workout/:id', async (req, res) => {
                 username='${req.user.username}' AND
                 workoutid='${req.params.id}'
        `);
+
+       if (!workouts['rows'][0]) {
+           return res.sendStatus(403);
+       }
+
        return res.json(workouts['rows'][0]);
 
    } catch(error) {
@@ -55,6 +61,7 @@ router.get('/workouts/:startDate/:endDate', async (req, res) => {
                 workoutdate >= '${startDate}' AND
                 workoutdate <= '${endDate}' AND
                 username = '${username}'
+            ORDER BY workoutdate DESC
        `)
 
 
@@ -158,5 +165,7 @@ router.post('/workout/update', async (req, res) => {
     }
 
 });
+
+
 
 module.exports = router;

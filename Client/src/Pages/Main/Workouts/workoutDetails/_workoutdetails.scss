@@ -1,0 +1,38 @@
+@import '../../../.././Styles/vars';
+
+@media screen and (min-width: $mobile-width) {
+
+  .workout-details-container {
+
+    background-color: white;
+    padding: 30px;
+    height: fit-content;
+    display: flex;
+    flex-direction: column;
+    width: 60vw;
+
+  }
+
+  .workout-details-button {
+    width: fit-content;
+    height: 40px;
+    background-color: #1c84c6;
+    border-radius: 0;
+    border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px;
+    padding: 6px 12px 6px 12px;
+    color: white;
+  }
+
+  .workout-details-header {
+    display: flex;
+    align-items: center;
+  }
+
+  .sets-information {
+    background: linear-gradient(90, $primary, $secondary);
+  }
+}

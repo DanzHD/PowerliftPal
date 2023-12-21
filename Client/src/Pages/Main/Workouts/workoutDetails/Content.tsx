@@ -1,13 +1,38 @@
 import {useParams} from "react-router-dom";
-import workoutDetails from "./WorkoutDetails.tsx";
+import './_workoutdetails.scss'
 import {useEffect, useState} from "react";
 import {useAPIContext} from "../../../../Contexts/APIContext.tsx";
+import Button from "../../../../common/components/Button/Button.tsx";
+import {useNavigate} from "react-router-dom";
+import Accordion from "../../../../common/components/Accordion/Accordion.tsx";
+import Text from "../../../../common/components/Text/Text.tsx";
+import exercise from "../../Exercises/Exercise.tsx";
+import {useAuthContext} from "../../../../Contexts/AuthContext.tsx";
 
 function Content() {
     const {workoutID} = useParams();
     const {getExercisesFromWorkout} = useAPIContext();
     const [exercises, setExercises] = useState(null);
+    const [sets, setSets] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [workout, setWorkout] = useState(null);
+    const navigate = useNavigate();
+
+    const {getWorkout, getSets} = useAPIContext();
+
+    useEffect(() => {
+        // Validation checking the user owns this workoutID
+        (async function() {
+            try {
+
+                let workoutDetails = await getWorkout({workoutID});
+                setWorkout(workoutDetails);
+            } catch (err) {
+                navigate('/workout')
+            }
+
+        }())
+    }, []);
 
     useEffect(() => {
         (async function() {
@@ -15,6 +40,7 @@ function Content() {
             try {
                 setLoading(true)
                 setExercises(await getExercisesFromWorkout({workoutID}));
+                setSets(await getSets({workoutID}));
             } catch (err) {
                 console.error(err)
             } finally {
@@ -22,10 +48,95 @@ function Content() {
             }
         })();
     }, []);
-    console.log(exercises)
 
 
-    return <div>Content</div>
+
+    if (loading) {
+        return <div>Loading</div>
+    }
+    if (!exercise) {
+        return <div>Nothing logged for this workout</div>
+    }
+
+    return (
+        <div className='workout-details-container'>
+            <div className='workout-details-header'>
+
+                <Button className='workout-details-button' onClick={() => navigate('/workout')}>
+                    <span className="material-symbols-outlined">
+                        arrow_back
+                    </span>
+                    <span>
+                        Back
+                    </span>
+
+                </Button>
+                <span style={{marginLeft: "auto", marginRight: 'auto'}}>
+
+                    <Text subheading={true}>Workout Details</Text>
+                </span>
+            </div>
+            <div className='line' />
+
+
+            {
+                exercises.map(exercise => {
+
+                    let exerciseSets = sets.filter(set => {
+
+
+                        return set['exercisename'] === exercise['name']
+                    });
+
+                    exerciseSets.sort((set1, set2) => set1['setnumber'] > set2['setnumber'] ? 1 : -1 )
+
+                    return (
+
+                        <Accordion key={exercise['name']} title={<Text>{exercise['name']}</Text>}
+                            content={
+                                <div className='set-container sets-information' >
+                                    <div className='set-entry'>
+                                        <Text>Set</Text>
+                                        <Text>Reps</Text>
+                                        <Text>Weight</Text>
+                                        <Text>Intensity</Text>
+                                        <Text>Warmup Set</Text>
+                                    </div>
+
+                                    {
+                                        exerciseSets.map(exerciseSet => {
+                                            console.log(exerciseSet['warmup'])
+                                            return (
+                                                <div className='set-entry'>
+                                                    <Text>{exerciseSet['setnumber']}</Text>
+                                                    <Text>{exerciseSet['reps']}</Text>
+                                                    <Text>{exerciseSet['weight']}</Text>
+                                                    <Text>{exerciseSet['intensity']}</Text>
+                                                    <Text>
+                                                        {exerciseSet['warmup'] ?
+                                                            <span className="material-symbols-outlined">
+                                                                check
+                                                            </span>
+                                                            :
+                                                            <div >No </div>
+                                                        }
+                                                    </Text>
+
+                                                </div>
+
+                                            )
+                                        })
+                                    }
+                                </div>
+                            }
+                        >
+
+                        </Accordion>
+                    )
+                })
+            }
+        </div>
+    )
 }
 
 export default Content;

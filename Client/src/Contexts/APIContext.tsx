@@ -132,7 +132,6 @@ export function APIContextProvider({ children }) {
             console.log(err);
         }
 
-
     }
 
     const getWorkoutsByDate = async ({fromDate, toDate}) => {
@@ -214,7 +213,44 @@ export function APIContextProvider({ children }) {
         }
     }
 
+    const getWorkout = async ({workoutID}) => {
+        try {
+            const options: Object = {
+                method: 'GET',
+                credentials: 'include',
+                headers: {
+                    'content-type': 'application/json'
+                }
+            }
 
+            let res = await fetch(`${BACKEND}/workout/${workoutID}`, options);
+            let workout = await res.json();
+            return workout;
+
+        } catch (err) {
+
+            throw new Error(err);
+        }
+    }
+
+    const getSets = async ({workoutID}) => {
+        try {
+            const options: Object = {
+                method: 'GET',
+                credentials: 'include',
+                headers: {
+                    'content-type': 'application/json'
+                }
+            }
+
+            let res = await fetch(`${BACKEND}/sets/${workoutID}`, options);
+            let sets = await res.json();
+            return sets;
+
+        } catch (err) {
+            console.error(err);
+        }
+    }
 
     const contextData = {
         weeklyWorkouts,
@@ -226,7 +262,9 @@ export function APIContextProvider({ children }) {
         getWorkoutsByDate,
         getAllWorkouts,
         getExercisesFromWorkout,
-        createWorkoutWithExercises
+        createWorkoutWithExercises,
+        getWorkout,
+        getSets
     }
 
     return (

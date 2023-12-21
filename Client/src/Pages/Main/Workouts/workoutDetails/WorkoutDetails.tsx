@@ -46,7 +46,7 @@ function WorkoutDetails() {
                 </div>
 
             </Navbar>
-            <Layout classNames='workout' header={Header()} content={Content()} />
+            <Layout classNames='workout workout-details' header={Header()} content={Content()} />
         </>
     )
 }

@@ -124,20 +124,20 @@ router.get('/set/:workoutID/:exerciseName/:setNumber', async (req, res) => {
 });
 
 /*
-    Gets all sets from a workout's exercise
+    Gets all sets from a workout
  */
-router.get('/sets/:workoutID/:exerciseName', async (req, res) => {
+router.get('/sets/:workoutID', async (req, res) => {
     const { workoutID, exerciseName } = req.params;
 
     try {
-        if (!req.isAuthentiated()) {
+        if (!req.isAuthenticated()) {
+
             return res.sendStatus(403);
         }
 
         let sets = await db.query(`SELECT * FROM sets
             WHERE 
-                workoutid = ${workoutID} AND
-                exercisename = '${exerciseName}'
+                workoutid = ${workoutID}
         `);
         res.json(sets['rows']);
     } catch (error) {
