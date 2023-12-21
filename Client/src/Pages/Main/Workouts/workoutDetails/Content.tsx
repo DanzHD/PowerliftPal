@@ -105,9 +105,8 @@ function Content() {
 
                                     {
                                         exerciseSets.map(exerciseSet => {
-                                            console.log(exerciseSet['warmup'])
                                             return (
-                                                <div className='set-entry'>
+                                                <div key={exerciseSet['setnumber']} className='set-entry'>
                                                     <Text>{exerciseSet['setnumber']}</Text>
                                                     <Text>{exerciseSet['reps']}</Text>
                                                     <Text>{exerciseSet['weight']}</Text>
