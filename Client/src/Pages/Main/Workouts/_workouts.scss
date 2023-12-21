@@ -208,7 +208,7 @@
     filter: brightness(150%);
   }
 
-  .add-set-button {
+  .add-set-button, .remove-set-button, .remove-exercise-button {
     color: orange;
     padding-top: 20px;
     grid-column: 1 / -1;

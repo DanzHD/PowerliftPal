@@ -93,19 +93,6 @@ function Content() {
         }
     }
 
-    const addSet = (exercise) => {
-
-        let exerciseIndex: number = exerciseSets.findIndex(exerciseSet => Object.keys(exerciseSet).toString() === exercise);
-
-        let setNumber: number = exerciseSets[exerciseIndex][exercise].length + 1;
-
-        let exerciseSetsCopy = exerciseSets.slice();
-        exerciseSetsCopy[exerciseIndex][exercise].push({setNumber: setNumber, reps: 5, weight: 100, intensity: 1, warmup: false});
-
-        setExerciseSets(exerciseSetsCopy);
-
-    }
-
     return (
         <>
 
@@ -224,7 +211,6 @@ function Content() {
                                         setAddingExercise={setAddingExercise}
                                         exerciseSets={exerciseSets}
                                         setExerciseSets={setExerciseSets}
-                                        addSet={addSet}
                                         handleCloseModal={handleCloseModal}
                                         setLoading={setLoading}
                                         setSelectingDate={setSelectingDate}
@@ -296,7 +282,6 @@ function AddingWorkoutsModal({
     handleCloseModal,
     exerciseSets,
     setExerciseSets,
-    addSet,
     setAddingExercise,
     setLoading,
     setSelectingDate
@@ -317,6 +302,32 @@ function AddingWorkoutsModal({
 
     }
 
+    const addSet = (exercise) => {
+
+        let exerciseIndex: number = exerciseSets.findIndex(exerciseSet => Object.keys(exerciseSet).toString() === exercise);
+
+        let setNumber: number = exerciseSets[exerciseIndex][exercise].length + 1;
+
+        let exerciseSetsCopy = exerciseSets.slice();
+        exerciseSetsCopy[exerciseIndex][exercise].push({setNumber: setNumber, reps: 5, weight: 100, intensity: 1, warmup: false});
+
+        setExerciseSets(exerciseSetsCopy);
+
+    }
+
+    const removeSet = (exercise) => {
+        let exerciseIndex: number = exerciseSets.findIndex(exerciseSet => Object.keys(exerciseSet).toString() === exercise);
+        let exerciseSetsCopy = exerciseSets.slice();
+        exerciseSetsCopy[exerciseIndex][exercise].pop();
+        setExerciseSets(exerciseSetsCopy);
+    }
+
+    const removeExercise = (exercise) => {
+        let exerciseIndex: number = exerciseSets.findIndex(exerciseSet => Object.keys(exerciseSet).toString() === exercise);
+        let exerciseSetsCopy = exerciseSets.slice();
+        exerciseSetsCopy.splice(exerciseIndex, 1)
+        setExerciseSets(exerciseSetsCopy);
+    }
 
     return (
         <>
@@ -419,9 +430,27 @@ function AddingWorkoutsModal({
                                                         }
                                                         <Text
                                                             onClick={() => addSet(Object.keys(exerciseSet).toString())}
-                                                            className='add-set-button'>
+                                                            className='add-set-button'
+                                                        >
                                                             Add Set
                                                         </Text>
+
+                                                        <Text
+                                                            className='remove-set-button'
+                                                            onClick={() => removeSet(Object.keys(exerciseSet).toString())}
+                                                        >
+                                                            Remove Set
+                                                        </Text>
+
+                                                        <Text
+                                                            className='remove-exercise-button'
+                                                            onClick={() => removeExercise(Object.keys(exerciseSet).toString())}
+                                                            styles={{color: 'red', paddingTop: '20px'}}
+                                                        >
+                                                            Remove Exercise
+                                                        </Text>
+
+
                                                     </div>
                                                 </form>
                                             </>
