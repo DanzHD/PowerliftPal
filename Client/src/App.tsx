@@ -22,7 +22,6 @@ function App() {
             <Router>
                 <AuthContextProvider>
 
-
                         <Routes>
                             <Route path='/login' element={<Login />} />
 

@@ -14,7 +14,13 @@ function Content() {
     return (
 
         <>
-            <div className='accordion-container'>
+
+            <div className='exercise-list-container'>
+                <div className='exercise-list-header'>
+                    <Text className='invisible' subheading={true}>Exercise List</Text>
+                </div>
+                <div className='line'/>
+
                 {muscleGroups.map((muscleGroup) => {
                     let exercise = exercises.filter(exercise => exercise['musclegroup'] === muscleGroup)
                     let accordionContent = DisplayExercise({exercises: exercise, dialogRef});
