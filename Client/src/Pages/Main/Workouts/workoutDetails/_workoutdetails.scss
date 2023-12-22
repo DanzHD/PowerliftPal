@@ -1,5 +1,24 @@
 @import '../../../.././Styles/vars';
 
+.workout-details-button {
+  width: fit-content;
+  height: 40px;
+  background-color: #1c84c6;
+  border-radius: 0;
+  border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 14px;
+  padding: 6px 12px 6px 12px;
+  color: white;
+}
+
+.workout-details-header {
+  display: flex;
+  align-items: center;
+}
+
 @media screen and (min-width: $mobile-width) {
 
   .workout-details-container {
@@ -10,29 +29,24 @@
     display: flex;
     flex-direction: column;
     width: 60vw;
-
   }
 
-  .workout-details-button {
-    width: fit-content;
-    height: 40px;
-    background-color: #1c84c6;
-    border-radius: 0;
-    border: none;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 14px;
-    padding: 6px 12px 6px 12px;
-    color: white;
-  }
 
-  .workout-details-header {
-    display: flex;
-    align-items: center;
-  }
 
   .sets-information {
     background: linear-gradient(90, $primary, $secondary);
+  }
+}
+
+@media screen and (max-width: $mobile-width) {
+  .workout-details-header {
+    flex-direction: column;
+
+  }
+
+  .workout-details-header > button {
+    margin-right: auto;
+    margin-left: 20px;
+    margin-top: 20px;
   }
 }

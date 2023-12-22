@@ -111,15 +111,15 @@ function Content() {
                                                     <Text>{exerciseSet['reps']}</Text>
                                                     <Text>{exerciseSet['weight']}</Text>
                                                     <Text>{exerciseSet['intensity']}</Text>
-                                                    <Text>
-                                                        {exerciseSet['warmup'] ?
-                                                            <span className="material-symbols-outlined">
-                                                                check
-                                                            </span>
-                                                            :
-                                                            <div >No </div>
-                                                        }
-                                                    </Text>
+
+                                                    {exerciseSet['warmup'] ?
+                                                        <span className="material-symbols-outlined">
+                                                            check
+                                                        </span>
+                                                        :
+                                                        <div >No </div>
+                                                    }
+
 
                                                 </div>
 
