@@ -100,16 +100,27 @@ router.post('/workout/create', async (req, res) => {
 });
 
 router.post('/workout/deleteOne', async (req, res) => {
-    const workoutID = req.body.ID;
+    const {workoutID} = req.body;
     try {
         if (!req.isAuthenticated()) {
             return res.sendStatus(403)
         }
 
-        await db.query(`DELETE  FROM workouts
+        await db.query(`
+            DELETE FROM sets
+            WHERE 
+                workoutid='${workoutID}';
+                
+            DELETE FROM exercise 
+            WHERE
+                workoutid = '${workoutID}';
+                
+            
+            DELETE FROM workouts
             WHERE 
                 workoutid = '${workoutID}';
         `)
+
         res.sendStatus(200);
 
     } catch(error) {

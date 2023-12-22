@@ -10,8 +10,17 @@ POST http://localhost:5000/log-in
 Content-Type: application/json
 
 {
-  "username": "testuser4",
-  "password": "testuser2"
+  "username": "SampleUser",
+  "password": "Password"
+}
+
+###
+
+POST http://localhost:5000/workout/deleteOne
+Content-Type: application/json
+
+{
+  "workoutID": "78"
 }
 
 ###
@@ -31,4 +40,6 @@ GET http://localhost:5000/allworkouts
 Accept: application/json
 
 ###
+
+
 

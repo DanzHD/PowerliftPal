@@ -20,6 +20,7 @@ function Footer({createExerciseRef}) {
         const exerciseInfo = {exerciseName: e.target.name.value,
             personalRecord: e.target.personalRecord.value, muscleGroup: e.target.muscleGroup.value}
         createExercise({exerciseInfo})
+        handleCloseModal();
 
     }
 
@@ -39,11 +40,11 @@ function Footer({createExerciseRef}) {
                                 <div>
 
                                     <label htmlFor='name'>Exercise Name</label>
-                                    <input type='text' name='name' />
+                                    <input type='text' name='name' required />
                                 </div>
                                 <div>
                                     <label htmlFor='personalRecord'>Personal Record</label>
-                                    <input type='number' name='personalRecord'/>
+                                    <input type='number' name='personalRecord' required />
 
                                 </div>
 

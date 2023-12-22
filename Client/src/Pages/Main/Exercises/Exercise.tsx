@@ -7,7 +7,7 @@ import Content from "./Content.tsx";
 import Footer from "./Footer.tsx";
 import {useRef} from "react";
 
-function Exericse({children}) {
+function Exericse() {
     const createExerciseRef = useRef(null);
     const navigate = useNavigate();
 

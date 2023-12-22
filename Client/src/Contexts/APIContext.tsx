@@ -127,6 +127,7 @@ export function APIContextProvider({ children }) {
             }
 
             await fetch(`${BACKEND}/exercisetype/create`, options);
+            getExercises();
 
         } catch(err) {
             console.log(err);
@@ -252,6 +253,28 @@ export function APIContextProvider({ children }) {
         }
     }
 
+    const deleteWorkout = async ({workoutID}) => {
+        try {
+            setLoading(true)
+            const options: Object = {
+                method: 'POST',
+                credentials: 'include',
+                headers: {
+                    'content-type': 'application/json'
+                },
+                body: JSON.stringify({
+                    workoutID: workoutID
+                })
+
+            }
+
+            await fetch(`${BACKEND}/workout/deleteOne`, options);
+            setLoading(false);
+        } catch (err) {
+            throw err;
+        }
+    }
+
     const contextData = {
         weeklyWorkouts,
         weeklyLiftWeight,
@@ -264,7 +287,8 @@ export function APIContextProvider({ children }) {
         getExercisesFromWorkout,
         createWorkoutWithExercises,
         getWorkout,
-        getSets
+        getSets,
+        deleteWorkout
     }
 
     return (

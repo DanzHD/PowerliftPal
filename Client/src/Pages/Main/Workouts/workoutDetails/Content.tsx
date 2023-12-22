@@ -18,7 +18,16 @@ function Content() {
     const [workout, setWorkout] = useState(null);
     const navigate = useNavigate();
 
-    const {getWorkout, getSets} = useAPIContext();
+    const {getWorkout, getSets, deleteWorkout} = useAPIContext();
+
+    const handleDelete = async () => {
+        try {
+            await deleteWorkout({workoutID});
+            navigate('/workout');
+        } catch (err) {
+            console.error(err);
+        }
+    }
 
     useEffect(() => {
         // Validation checking the user owns this workoutID
@@ -59,82 +68,101 @@ function Content() {
     }
 
     return (
-        <div className='workout-details-container'>
-            <div className='workout-details-header'>
+        <>
+            <div className='workout-details-container'>
+                <div className='workout-details-header'>
 
-                <Button className='workout-details-button' onClick={() => navigate('/workout')}>
-                    <span className="material-symbols-outlined">
-                        arrow_back
+                    <Button className='workout-details-button' onClick={() => navigate('/workout')}>
+                        <span className="material-symbols-outlined">
+                            arrow_back
+                        </span>
+                        <span>
+                            Back
+                        </span>
+
+                    </Button>
+                    <span style={{marginLeft: "auto", marginRight: 'auto'}}>
+
+                        <Text subheading={true}>Workout Details</Text>
                     </span>
-                    <span>
-                        Back
-                    </span>
-
-                </Button>
-                <span style={{marginLeft: "auto", marginRight: 'auto'}}>
-
-                    <Text subheading={true}>Workout Details</Text>
-                </span>
-            </div>
-            <div className='line' />
 
 
-            {
-                exercises.map(exercise => {
 
-                    let exerciseSets = sets.filter(set => {
+                </div>
+                <div className='line' />
 
 
-                        return set['exercisename'] === exercise['name']
-                    });
+                {
+                    exercises.map(exercise => {
 
-                    exerciseSets.sort((set1, set2) => set1['setnumber'] > set2['setnumber'] ? 1 : -1 )
+                        let exerciseSets = sets.filter(set => {
 
-                    return (
 
-                        <Accordion key={exercise['name']} title={<Text>{exercise['name']}</Text>}
-                            content={
-                                <div className='set-container sets-information' >
-                                    <div className='set-entry'>
-                                        <Text>Set</Text>
-                                        <Text>Reps</Text>
-                                        <Text>Weight</Text>
-                                        <Text>Intensity</Text>
-                                        <Text>Warmup Set</Text>
+                            return set['exercisename'] === exercise['name']
+                        });
+
+                        exerciseSets.sort((set1, set2) => set1['setnumber'] > set2['setnumber'] ? 1 : -1 )
+
+                        return (
+
+                            <Accordion key={exercise['name']} title={<Text>{exercise['name']}</Text>}
+                                content={
+                                    <div className='set-container sets-information' >
+                                        <div className='set-entry'>
+                                            <Text>Set</Text>
+                                            <Text>Reps</Text>
+                                            <Text>Weight</Text>
+                                            <Text>Intensity</Text>
+                                            <Text>Warmup Set</Text>
+                                        </div>
+
+                                        {
+                                            exerciseSets.map(exerciseSet => {
+                                                return (
+                                                    <div key={exerciseSet['setnumber']} className='set-entry'>
+                                                        <Text>{exerciseSet['setnumber']}</Text>
+                                                        <Text>{exerciseSet['reps']}</Text>
+                                                        <Text>{exerciseSet['weight']}</Text>
+                                                        <Text>{exerciseSet['intensity']}</Text>
+
+                                                        {exerciseSet['warmup'] ?
+                                                            <span className="material-symbols-outlined">
+                                                                check
+                                                            </span>
+                                                            :
+                                                            <div >No </div>
+                                                        }
+
+                                                    </div>
+
+                                                )
+                                            })
+                                        }
                                     </div>
+                                }
+                            >
 
-                                    {
-                                        exerciseSets.map(exerciseSet => {
-                                            return (
-                                                <div key={exerciseSet['setnumber']} className='set-entry'>
-                                                    <Text>{exerciseSet['setnumber']}</Text>
-                                                    <Text>{exerciseSet['reps']}</Text>
-                                                    <Text>{exerciseSet['weight']}</Text>
-                                                    <Text>{exerciseSet['intensity']}</Text>
-
-                                                    {exerciseSet['warmup'] ?
-                                                        <span className="material-symbols-outlined">
-                                                            check
-                                                        </span>
-                                                        :
-                                                        <div >No </div>
-                                                    }
-
-
-                                                </div>
-
-                                            )
-                                        })
-                                    }
-                                </div>
-                            }
-                        >
-
-                        </Accordion>
-                    )
-                })
-            }
-        </div>
+                            </Accordion>
+                        )
+                    })
+                }
+                <Button styles=
+                    {
+                        {
+                            backgroundColor: 'red',
+                            display: 'block',
+                            marginLeft: 'auto',
+                            marginRight: 'auto',
+                            marginTop: '10rem'
+                        }
+                    }
+                    className='workout-details-button'
+                    onClick={handleDelete}
+                >
+                    Delete Workout
+                </Button>
+            </div>
+        </>
     )
 }
 
