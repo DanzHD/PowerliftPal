@@ -94,18 +94,6 @@
 
   }
 
-  .main > .header.exercise {
-    display: grid;
-    grid-template-rows: 75px auto;
-  }
-
-  .main > .header.exercise > .logo {
-    background-color: $secondary;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
   .main > .header.exercise > .section {
     display: flex;
     justify-content: center;
