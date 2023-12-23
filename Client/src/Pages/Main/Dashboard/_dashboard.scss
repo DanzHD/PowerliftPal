@@ -6,11 +6,10 @@
     grid-template-columns:repeat(3, 1fr);
     grid-template-areas:
       'header header header'
-      'main-content main-content right-sidebar'
-      'footer footer footer';
-    grid-template-rows: 75px auto 100px;
+      'main-content main-content right-sidebar';
+    grid-template-rows: 150px auto;
     margin-left: $navbar-side-size;
-    margin-right: 5rem;
+
   }
 
   .main > .main-content.dashboard {
@@ -45,6 +44,12 @@
     display: flex;
     justify-content: space-between;
     margin-right: 2rem;
+  }
+
+  .header.dashboard > .section {
+    margin-top: 1em;
+
+    margin-left: 1em;
   }
 
 }

@@ -1,0 +1,15 @@
+@import "../../.././Styles/vars";
+
+.main > .header > .logo {
+  grid-row-start: 1;
+  background-color: $secondary;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@media only screen and (max-width: $mobile-width) {
+  .invisible {
+    opacity: 0;
+  }
+}

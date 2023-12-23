@@ -6,6 +6,10 @@ function Header() {
 
     return (
         <>
+            <div className='logo'>
+                <Text heading={true}>PowerliftPal</Text>
+            </div>
+
             <Text heading={true}>Hello {user}</Text>
         </>
     )

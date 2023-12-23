@@ -1,8 +1,7 @@
-import Text from "../../../common/components/Text/Text.tsx";
+import Text from "../Text/Text.tsx";
+import './_header.scss'
 
-
-
-function Header() {
+function Header({title}) {
     return (
         <>
             <div className='logo'>
@@ -10,7 +9,7 @@ function Header() {
                 <Text heading={true}>PowerliftPal </Text>
             </div>
 
-            <Text className='section' heading={true}>Exercises</Text>
+            <Text className='section invisible' heading={true}>{title}</Text>
         </>
     )
 }

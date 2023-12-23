@@ -1,7 +1,7 @@
 import Navbar from "../../../common/components/navbar/Navbar.tsx";
 import {useNavigate} from "react-router-dom";
 import Layout from "../../../common/components/Layout/Layout.tsx";
-import Header from "./Header.tsx";
+import Header from "../../../common/components/Header/Header.tsx";
 import Content from "./Content.tsx";
 import './_workouts.scss'
 
@@ -44,7 +44,7 @@ function Workouts({children}) {
 
             </Navbar>
 
-            <Layout classNames='workout' header={Header()} content={Content()}  ></Layout>
+            <Layout classNames='workout' header={<Header title={'Workouts'} />} content={Content()}  ></Layout>
         </>
     )
 }

@@ -17,7 +17,7 @@ function Content() {
 
             <div className='exercise-list-container'>
                 <div className='exercise-list-header'>
-                    <Text className='invisible' subheading={true}>Exercise List</Text>
+                    <Text subheading={true}>Exercise List</Text>
                 </div>
                 <div className='line'/>
 

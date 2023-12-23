@@ -1,7 +1,7 @@
 import {useNavigate} from "react-router-dom";
 import Navbar from "../../../../common/components/navbar/Navbar.tsx";
 import Layout from "../../../../common/components/Layout/Layout.tsx";
-import Header from "../Header.tsx";
+import Header from "../../../../common/components/Header/Header.tsx";
 import Content from "./Content.tsx";
 
 
@@ -46,7 +46,7 @@ function WorkoutDetails() {
                 </div>
 
             </Navbar>
-            <Layout classNames='workout workout-details' header={Header()} content={Content()} />
+            <Layout classNames='workout workout-details' header={<Header title='Workout Details' />} content={Content()} />
         </>
     )
 }

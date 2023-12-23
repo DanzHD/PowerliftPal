@@ -1,13 +1,14 @@
 import Navbar from "../../../common/components/navbar/Navbar.tsx";
 import Layout from "../../../common/components/Layout/Layout.tsx";
 import Content from "./Components/Content.tsx";
-import Header from "./Components/Header.tsx";
+import Header from "../../../common/components/Header/Header.tsx";
 import RightSideBar from "./Components/RightSideBar.tsx";
-import Footer from "./Components/Footer.tsx";
 import {useNavigate} from "react-router-dom";
 import './_dashboard.scss'
+import {useAuthContext} from "../../../Contexts/AuthContext.tsx";
 
 function Dashboard() {
+    const {user} = useAuthContext();
     const navigate = useNavigate();
 
     return (
@@ -46,8 +47,12 @@ function Dashboard() {
 
         </Navbar>
 
-        <Layout classNames='dashboard' content={Content()} header={Header()} sideBar={RightSideBar()} footer={Footer()} >
-        </Layout>
+        <Layout classNames='dashboard'
+                content={Content()}
+                header={<Header title={`Hello ${user}`} />}
+                sideBar={RightSideBar()}
+        />
+
 
 
 

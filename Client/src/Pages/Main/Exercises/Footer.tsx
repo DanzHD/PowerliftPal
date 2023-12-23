@@ -15,11 +15,11 @@ function Footer({createExerciseRef}) {
         createExerciseRef.current.close();
     }
 
-    const handleCreateExercise = (e) => {
+    const handleCreateExercise = async (e) => {
         e.preventDefault();
         const exerciseInfo = {exerciseName: e.target.name.value,
             personalRecord: e.target.personalRecord.value, muscleGroup: e.target.muscleGroup.value}
-        createExercise({exerciseInfo})
+        await createExercise({exerciseInfo})
         handleCloseModal();
 
     }

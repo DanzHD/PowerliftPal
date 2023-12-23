@@ -116,7 +116,7 @@ export function APIContextProvider({ children }) {
 
     const createExercise = async ({exerciseInfo}) => {
         try {
-
+            setLoading(true)
             const options = {
                 method: 'POST',
                 credentials: 'include',
@@ -127,10 +127,12 @@ export function APIContextProvider({ children }) {
             }
 
             await fetch(`${BACKEND}/exercisetype/create`, options);
-            getExercises();
+            await getExercises();
 
         } catch(err) {
             console.log(err);
+        } finally {
+            setLoading(false);
         }
 
     }
