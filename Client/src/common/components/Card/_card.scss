@@ -1,0 +1,13 @@
+.card {
+  width: fit-content;
+  height: fit-content;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  padding: 1em;
+  cursor: pointer;
+  flex-basis: 100%;
+  margin: 1em 1em 0 1em;
+  text-decoration: underline;
+  border-left: 4px solid blue;
+}

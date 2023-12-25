@@ -1,5 +1,6 @@
 import {createContext, useContext, useState, useEffect} from "react";
 import {BACKEND} from "../common/utils/Constants.tsx";
+import {useNavigate} from "react-router-dom";
 
 const AuthContext = createContext(null);
 
@@ -53,6 +54,7 @@ export function AuthContextProvider({ children }) {
 
     const logoutUser = async () => {
         setLoading(true);
+
         try {
 
             const options = {
@@ -65,6 +67,7 @@ export function AuthContextProvider({ children }) {
             await fetch(`${BACKEND}/log-out`, options);
 
             setUser(null);
+
         } catch(error) {
             console.error(error);
         }

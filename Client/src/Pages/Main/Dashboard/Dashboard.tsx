@@ -8,7 +8,7 @@ import './_dashboard.scss'
 import {useAuthContext} from "../../../Contexts/AuthContext.tsx";
 
 function Dashboard() {
-    const {user} = useAuthContext();
+    const {user, logoutUser} = useAuthContext();
     const navigate = useNavigate();
 
     return (
@@ -37,23 +37,21 @@ function Dashboard() {
                 <div>Exercises</div>
             </div>
 
-            <div className='navbar-logo' onClick={() => navigate('/profile')}>
+            <div className='navbar-logo' onClick={() => logoutUser()}>
 
                 <span className="material-symbols-outlined">
-                    person
+                    logout
                 </span>
-                <div>Profile</div>
+                <div>Logout</div>
             </div>
 
         </Navbar>
 
         <Layout classNames='dashboard'
                 content={Content()}
-                header={<Header title={`Hello ${user}`} />}
+                header={<Header styles={{opacity: '1'}} title={`Hello ${user}`} />}
                 sideBar={RightSideBar()}
         />
-
-
 
 
     </>

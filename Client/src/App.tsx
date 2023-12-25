@@ -9,8 +9,6 @@ import {AuthContextProvider} from "./Contexts/AuthContext.tsx";
 import APIRoutes from "./common/utils/APIRoutes.tsx";
 import Workouts from "./Pages/Main/Workouts/Workouts.tsx";
 import Exercise from "./Pages/Main/Exercises/Exercise.tsx";
-import Profile from "./Pages/Main/Profile/Profile.tsx";
-import workoutDetails from "./Pages/Main/Workouts/workoutDetails/WorkoutDetails.tsx";
 import WorkoutDetails from "./Pages/Main/Workouts/workoutDetails/WorkoutDetails.tsx";
 
 
@@ -33,7 +31,6 @@ function App() {
                                     <Route path='/workout/:workoutID'  element={<WorkoutDetails />} />
                                     <Route path='/workout' element={<Workouts />} />
                                     <Route path='/exercise' element={<Exercise />} />
-                                    <Route path='/profile' element={<Profile />} />
                                 </Route>
                             </Route>
 

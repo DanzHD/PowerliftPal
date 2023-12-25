@@ -1,7 +1,9 @@
 import Text from "../Text/Text.tsx";
 import './_header.scss'
 
-function Header({title}) {
+function Header({title, styles}) {
+
+
     return (
         <>
             <div className='logo'>
@@ -9,7 +11,7 @@ function Header({title}) {
                 <Text heading={true}>PowerliftPal </Text>
             </div>
 
-            <Text className='section invisible' heading={true}>{title}</Text>
+            <Text styles={styles} className={`section invisible`} heading={true}>{title}</Text>
         </>
     )
 }

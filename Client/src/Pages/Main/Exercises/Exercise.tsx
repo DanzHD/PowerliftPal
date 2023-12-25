@@ -6,10 +6,12 @@ import './_exercise.scss'
 import Content from "./Content.tsx";
 import Footer from "./Footer.tsx";
 import {useRef} from "react";
+import {useAuthContext} from "../../../Contexts/AuthContext.tsx";
 
 function Exericse() {
     const createExerciseRef = useRef(null);
     const navigate = useNavigate();
+    const {logoutUser} = useAuthContext();
 
     return (
         <>
@@ -37,12 +39,12 @@ function Exericse() {
                     <div>Exercises</div>
                 </div>
 
-                <div className='navbar-logo' onClick={() => navigate('/profile')}>
+                <div className='navbar-logo' onClick={() => logoutUser()}>
 
                     <span className="material-symbols-outlined">
-                        person
+                        logout
                     </span>
-                    <div>Profile</div>
+                    <div>Logout</div>
                 </div>
 
             </Navbar>
