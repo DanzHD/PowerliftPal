@@ -24,6 +24,10 @@
 
   .main > .right-sidebar.dashboard {
     margin-right: 5rem;
+    margin-top: 1rem;
+    background-color: white;
+    padding: 1em;
+    height: fit-content;
   }
 
   .sidebar-grid {
@@ -78,6 +82,13 @@ b {
     margin-left: 1em;
     margin-right: 1em;
 
+  }
+
+  .main > .right-sidebar.dashboard {
+    background-color: white;
+    padding: 0.5em;
+    margin: 1em;
+    height: fit-content;
   }
 
 }

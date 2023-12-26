@@ -23,7 +23,7 @@
 
 .workout-button {
   border-radius: 0;
-  padding: 0px;
+  padding: 0;
   font-size: 13px;
   font-weight: 300;
   border: none;
@@ -218,8 +218,6 @@
 
   }
 
-
-
   .workouts-list-header > button {
     border-radius: 0;
     padding: 10px;
@@ -273,7 +271,6 @@
   }
 
   .workouts-list {
-    padding: 20px;
     margin-bottom: $navbar-bottom-size;
     background-color: white;
     display: flex;
@@ -307,6 +304,7 @@
   .set-container {
     padding-left: 10px;
   }
+
 
 
   .set-entry > select {
@@ -349,5 +347,12 @@
     margin-left: auto;
     margin-right: auto;
   }
+
+  .workout-entry {
+    width: calc(100vw - 2em);
+
+  }
+
+
 
 }
