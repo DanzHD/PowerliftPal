@@ -8,6 +8,7 @@ import {useAPIContext} from "../../../Contexts/APIContext.tsx";
 import {useNavigate} from "react-router-dom";
 import Accordion from "../../../common/components/Accordion/Accordion.tsx";
 import Select from "react-select";
+import LoadingSpinner from "../../../common/components/LoadingSpinner/LoadingSpinner.tsx";
 
 function Content() {
 
@@ -250,7 +251,7 @@ function Content() {
                             )
                         })
                         :
-                        <div>Loading... </div>
+                        <LoadingSpinner />
 
 
 

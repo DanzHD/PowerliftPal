@@ -1,5 +1,6 @@
 import {BACKEND} from "../common/utils/Constants.tsx";
 import {createContext, useContext, useEffect, useState} from "react";
+import Loading from "../Pages/Loading.tsx";
 
 const APIContext = createContext('');
 
@@ -295,7 +296,7 @@ export function APIContextProvider({ children }) {
 
     return (
         <APIContext.Provider value={contextData}>
-            {loading ? <p>loading...</p> : children}
+            {loading ? <Loading /> : children}
         </APIContext.Provider>
     )
 }

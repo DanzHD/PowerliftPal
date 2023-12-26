@@ -1,6 +1,6 @@
 import {createContext, useContext, useState, useEffect} from "react";
 import {BACKEND} from "../common/utils/Constants.tsx";
-import {useNavigate} from "react-router-dom";
+import Loading from "../Pages/Loading.tsx";
 
 const AuthContext = createContext(null);
 
@@ -112,7 +112,8 @@ export function AuthContextProvider({ children }) {
 
     return (
         <AuthContext.Provider value={contextData}>
-            {loading ? <p>loading...</p> : children}
+
+            { loading ? <Loading /> : children }
         </AuthContext.Provider>
     )
 }

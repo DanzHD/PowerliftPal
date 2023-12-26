@@ -3,6 +3,7 @@ import {useEffect, useState} from "react";
 import {useAPIContext} from "../../../../Contexts/APIContext.tsx";
 import Card from "../../../../common/components/Card/Card.tsx";
 import {useNavigate} from "react-router-dom";
+import LoadingSpinner from "../../../../common/components/LoadingSpinner/LoadingSpinner.tsx";
 
 function Content() {
     const {getAllWorkouts} = useAPIContext();
@@ -24,13 +25,13 @@ function Content() {
             }
         })();
     }, []);
-    console.log(workouts);
+
 
     return (
         <>
             <Text heading={true} styles={{textAlign: 'center'}} >Recent Workouts</Text>
             {
-                loading ? <div> Loading </div> :
+                loading ? <LoadingSpinner styles={{justifyContent: 'flex-start'}} /> :
 
                     <div className='recent-workouts'>
                         {
