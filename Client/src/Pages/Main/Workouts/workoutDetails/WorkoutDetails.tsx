@@ -3,12 +3,14 @@ import Navbar from "../../../../common/components/navbar/Navbar.tsx";
 import Layout from "../../../../common/components/Layout/Layout.tsx";
 import Header from "../../../../common/components/Header/Header.tsx";
 import Content from "./Content.tsx";
+import {useAuthContext} from "../../../../Contexts/AuthContext.tsx";
 
 
 
 function WorkoutDetails() {
 
     const navigate = useNavigate();
+    const {logoutUser} = useAuthContext();
 
 
     return (
@@ -37,12 +39,12 @@ function WorkoutDetails() {
                     <div>Exercises</div>
                 </div>
 
-                <div className='navbar-logo' onClick={() => navigate('/profile')}>
+                <div className='navbar-logo' onClick={logoutUser}>
 
                     <span className="material-symbols-outlined">
-                        person
+                        logout
                     </span>
-                    <div>Profile</div>
+                    <div>Logout</div>
                 </div>
 
             </Navbar>

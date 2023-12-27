@@ -3,7 +3,7 @@ import {MoonLoader} from "react-spinners";
 
 
 function LoadingSpinner({styles}) {
-    console.log(styles)
+
     return (
         <>
 
