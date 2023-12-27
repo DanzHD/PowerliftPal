@@ -8,6 +8,7 @@ import Accordion from "../../../../common/components/Accordion/Accordion.tsx";
 import Text from "../../../../common/components/Text/Text.tsx";
 import exercise from "../../Exercises/Exercise.tsx";
 import {useAuthContext} from "../../../../Contexts/AuthContext.tsx";
+import LoadingSpinner from "../../../../common/components/LoadingSpinner/LoadingSpinner.tsx";
 
 function Content() {
     const {workoutID} = useParams();
@@ -61,7 +62,7 @@ function Content() {
 
 
     if (loading) {
-        return <div>Loading</div>
+        return <LoadingSpinner />
     }
     if (!exercise) {
         return <div>Nothing logged for this workout</div>
