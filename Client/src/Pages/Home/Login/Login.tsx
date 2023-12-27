@@ -1,14 +1,16 @@
 import {useAuthContext} from "../../../Contexts/AuthContext.tsx";
 import {useNavigate} from "react-router-dom";
-import {useEffect, useRef} from "react";
+import {useEffect, useRef, useState} from "react";
 import './_login.scss'
 import Button from "../../../common/components/Button/Button.tsx";
 import Text from "../../../common/components/Text/Text.tsx";
 
 
 function Login() {
+
     const navigate = useNavigate();
-    const {user, loginUser} = useAuthContext();
+    const {user, loginUser, invalidLogin} = useAuthContext();
+
 
 
     const loginForm = useRef(null);
@@ -20,20 +22,33 @@ function Login() {
         }
     }, []);
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        const username = loginForm.current.username.value;
-        const password = loginForm.current.password.value;
-        const userInfo = {username: username, password: password}
-        loginUser(userInfo);
+    const handleSubmit = async (e) => {
+        try {
+
+            e.preventDefault();
+            const username = loginForm.current.username.value;
+            const password = loginForm.current.password.value;
+            const userInfo = {username: username, password: password};
+            await loginUser(userInfo);
+        } catch (err) {
+            console.error(err);
+        }
     }
 
-    const handleExampleUserSubmit = (e) => {
-        e.preventDefault();
-        const username = 'SampleUser';
-        const password = 'Password';
-        const userInfo = {username: username, password: password}
-        loginUser(userInfo);
+
+    const handleExampleUserSubmit = async (e) => {
+        try {
+
+            e.preventDefault();
+
+            const username = 'SampleUser';
+            const password = 'Password';
+            const userInfo = {username: username, password: password}
+            await loginUser(userInfo);
+
+        } catch (err) {
+            console.error(err);
+        }
     }
 
     return (
@@ -68,7 +83,7 @@ function Login() {
                                 placeholder='Password'
                             />
                         </div>
-
+                        {invalidLogin && <Text styles={{color: 'red'}}> Invalid username or password. Please try again. </Text>}
                         <Button type='submit' >Login</Button>
                         <Button type='button' onClick={handleExampleUserSubmit}>Log in as example user</Button>
                         <Button type='button'>Sign up</Button>

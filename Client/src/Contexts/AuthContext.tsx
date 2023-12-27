@@ -19,6 +19,7 @@ export function useAuthContext() {
 export function AuthContextProvider({ children }) {
     const [loading, setLoading] = useState(true);
     const [user, setUser] = useState(false);
+    const [invalidLogin, setInvalidLogin] = useState(false);
 
     useEffect(() => {
         checkUserStatus();
@@ -27,26 +28,30 @@ export function AuthContextProvider({ children }) {
 
     const loginUser = async (userInfo) => {
         setLoading(true);
-        try {
 
-            const {username, password} = userInfo;
-            const options = {
-                method: 'POST',
-                headers: {
-                    'content-type': 'application/json'
-                },
-                body: JSON.stringify({
-                    username: username,
-                    password: password
-                }),
-                credentials: 'include'
-            }
-            let res = await fetch(`${BACKEND}/log-in`, options);
-            let {username: user} = await res.json();
-            setUser(user);
-        } catch(error) {
-            console.error(error);
+        const {username, password} = userInfo;
+        const options = {
+            method: 'POST',
+            headers: {
+                'content-type': 'application/json'
+            },
+            body: JSON.stringify({
+                username: username,
+                password: password
+            }),
+            credentials: 'include'
         }
+
+        let res = await fetch(`${BACKEND}/log-in`, options);
+        if (res['status'] === 401) {
+            setLoading(false);
+            setInvalidLogin(true);
+            throw new Error('unauthorized');
+        }
+
+        let {username: user} = await res.json();
+        setUser(user);
+        setInvalidLogin(false);
 
         setLoading(false);
 
@@ -107,7 +112,8 @@ export function AuthContextProvider({ children }) {
         loginUser,
         logoutUser,
         registerUser,
-        checkUserStatus
+        checkUserStatus,
+        invalidLogin
     }
 
     return (
