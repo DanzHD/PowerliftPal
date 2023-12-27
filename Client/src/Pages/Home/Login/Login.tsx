@@ -3,6 +3,7 @@ import {useNavigate} from "react-router-dom";
 import {useEffect, useRef} from "react";
 import './_login.scss'
 import Button from "../../../common/components/Button/Button.tsx";
+import Text from "../../../common/components/Text/Text.tsx";
 
 
 function Login() {
@@ -42,7 +43,7 @@ function Login() {
                 <div className='login-container' >
 
                     <div className='login-header'>
-                        logo
+                        <Text heading={true}> PowerliftPal </Text>
                     </div>
 
                     <form ref={loginForm} onSubmit={handleSubmit}>
