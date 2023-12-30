@@ -4,10 +4,13 @@ const router = express.Router();
 const bcrypt = require('bcrypt')
 
 router.post('/sign-up', async (req, res) => {
-    if (req.body.username.length < 1 || !req.body.username) {
+    const MINIMUM_PASSWORD_LENGTH = 8;
+    const MINIMUM_USERNAME_LENGTH = 1;
+
+    if (req.body.username.length < MINIMUM_USERNAME_LENGTH || !req.body.username) {
         return res.sendStatus(422);
     }
-    if (req.body.password.length < 8 || !req.body.password) {
+    if (req.body.password.length < MINIMUM_PASSWORD_LENGTH || !req.body.password) {
         return res.sendStatus(422);
     }
 
@@ -83,10 +86,12 @@ router.post('/sign-up', async (req, res) => {
                 } catch(err) {
                     console.log(err);
                     await db.query('ROLLBACK');
+                    if (err.code === '23505') {
+                        return res.sendStatus(409);
+                    }
                     return res.sendStatus(400);
 
                 }
-
 
             }
 

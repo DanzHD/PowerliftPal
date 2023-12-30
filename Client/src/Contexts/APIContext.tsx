@@ -4,6 +4,16 @@ import Loading from "../Pages/Loading.tsx";
 
 const APIContext = createContext('');
 
+export function useAPIContext() {
+    const context = useContext(APIContext);
+
+    if (!context) {
+        throw new Error('APIContext must be used inside a provider');
+    }
+
+    return context;
+}
+
 export function APIContextProvider({ children }) {
     const [loading, setLoading] = useState(true);
     const [weeklyWorkouts, setWeeklyWorkouts] = useState(null);
@@ -301,12 +311,4 @@ export function APIContextProvider({ children }) {
     )
 }
 
-export function useAPIContext() {
-    const context = useContext(APIContext);
 
-    if (!context) {
-        throw new Error('APIContext must be used inside a provider');
-    }
-
-    return context;
-}

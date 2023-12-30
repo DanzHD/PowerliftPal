@@ -10,6 +10,7 @@ import APIRoutes from "./common/utils/APIRoutes.tsx";
 import Workouts from "./Pages/Main/Workouts/Workouts.tsx";
 import Exercise from "./Pages/Main/Exercises/Exercise.tsx";
 import WorkoutDetails from "./Pages/Main/Workouts/workoutDetails/WorkoutDetails.tsx";
+import SignUp from "./Pages/Home/Register/SignUp.tsx";
 
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
 
                         <Routes>
                             <Route path='/login' element={<Login />} />
+                            <Route path='signup' element={<SignUp />} />
 
 
                             <Route element={<PrivateRoutes /> } >

@@ -1,0 +1,52 @@
+@import "../../../Styles/vars";
+@import "../../../Styles/layout";
+
+@media only screen and (min-width: $mobile-width) {
+
+  .signup-page-container {
+    @include page-layout;
+  }
+
+  .signup-container {
+    @include container;
+    grid-template-areas: 'signup-header' 'signup-form';
+    grid-template-rows: 1fr 5fr;
+    height: 25rem;
+    width: 20rem;
+  }
+
+  .signup-header {
+    grid-area: signup-header;
+    @include center;
+  }
+}
+
+.signup-container > form {
+  grid-area: signup-form;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  gap: 1em;
+}
+
+@media only screen and (max-width: $mobile-width) {
+  .signup-page-container {
+    @include mobile-page-container;
+  }
+
+  .signup-container {
+    @include mobile-content-container;
+  }
+
+  .signup-container > form {
+    grid-row-start: 2;
+    grid-column-start: 1;
+  }
+
+  .signup-header {
+    grid-row-start: 1;
+    grid-column-start: 1;
+    @include center;
+  }
+
+}

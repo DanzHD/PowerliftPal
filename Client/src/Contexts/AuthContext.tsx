@@ -1,6 +1,12 @@
 import {createContext, useContext, useState, useEffect} from "react";
 import {BACKEND} from "../common/utils/Constants.tsx";
 import Loading from "../Pages/Loading.tsx";
+import {
+    DUPLICATE,
+    INVALID_PASSWORD,
+    INVALID_USERNAME, SUCCESS, UNAUTHORIZED
+
+} from "../common/utils/Constant.tsx";
 
 const AuthContext = createContext(null);
 
@@ -20,6 +26,8 @@ export function AuthContextProvider({ children }) {
     const [loading, setLoading] = useState(true);
     const [user, setUser] = useState(false);
     const [invalidLogin, setInvalidLogin] = useState(false);
+    const [invalidUsername, setInvalidUsername] = useState(null);
+    const [invalidPassword, setInvalidPassword] = useState(null);
 
     useEffect(() => {
         checkUserStatus();
@@ -43,7 +51,7 @@ export function AuthContextProvider({ children }) {
         }
 
         let res = await fetch(`${BACKEND}/log-in`, options);
-        if (res['status'] === 401) {
+        if (res['status'] === UNAUTHORIZED) {
             setLoading(false);
             setInvalidLogin(true);
             throw new Error('unauthorized');
@@ -79,7 +87,57 @@ export function AuthContextProvider({ children }) {
         setLoading(false);
     }
 
-    const registerUser = () => {}
+    const registerUser = async (userInfo) => {
+        setLoading(true);
+        const MINIMUM_PASSWORD_LENGTH = 8;
+        const MINIMUM_USERNAME_LENGTH = 1;
+
+        if (userInfo['username'].length < MINIMUM_USERNAME_LENGTH) {
+            setLoading(false);
+            const error = Error("Username is too short");
+            error.code = INVALID_USERNAME;
+            throw error;
+        }
+        if (userInfo['password'].length < MINIMUM_PASSWORD_LENGTH) {
+            setLoading(false);
+            const error = Error("Password must have a minimum of 8 characters");
+            error.code = INVALID_PASSWORD;
+            throw error;
+
+        }
+
+        const options = {
+            method: 'POST',
+            headers: {
+                'content-type': 'application/json'
+            },
+            credentials: 'include',
+            body: JSON.stringify({
+                username: userInfo['username'],
+                password: userInfo['password']
+            })
+        }
+
+        const res = await fetch(`${BACKEND}/sign-up`, options);
+        if (res['status'] === DUPLICATE) {
+            setLoading(false);
+            const error = new Error('Duplicate username');
+            error.code = DUPLICATE;
+            throw error;
+        }
+
+        if (res['status'] !== SUCCESS) {
+            setLoading(false);
+            const error = new Error();
+            error.code = res['status'];
+            throw error;
+        }
+
+        await loginUser(userInfo);
+        setLoading(false);
+
+
+    }
 
     const checkUserStatus = async () => {
         setLoading(true);
@@ -102,8 +160,6 @@ export function AuthContextProvider({ children }) {
         }
 
         setLoading(false);
-
-
     }
 
     const contextData = {
@@ -113,7 +169,11 @@ export function AuthContextProvider({ children }) {
         logoutUser,
         registerUser,
         checkUserStatus,
-        invalidLogin
+        invalidLogin,
+        invalidUsername,
+        invalidPassword,
+        setInvalidUsername,
+        setInvalidPassword
     }
 
     return (

@@ -1,5 +1,5 @@
 import {useAuthContext} from "../../../Contexts/AuthContext.tsx";
-import {useNavigate} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {useEffect, useRef, useState} from "react";
 import './_login.scss'
 import Button from "../../../common/components/Button/Button.tsx";
@@ -10,8 +10,6 @@ function Login() {
 
     const navigate = useNavigate();
     const {user, loginUser, invalidLogin} = useAuthContext();
-
-
 
     const loginForm = useRef(null);
 
@@ -86,7 +84,7 @@ function Login() {
                         {invalidLogin && <Text styles={{color: 'red'}}> Invalid username or password. Please try again. </Text>}
                         <Button type='submit' >Login</Button>
                         <Button type='button' onClick={handleExampleUserSubmit}>Log in as example user</Button>
-                        <Button type='button'>Sign up</Button>
+                        <Text>Don't have an account? <Link to='/signup'>Sign up</Link></Text>
                     </form>
                 </div>
 
