@@ -97,6 +97,7 @@ router.get('/exercisetype/readAll', async (req, res) => {
                 exercisetype.username
             HAVING
                 exercisetype.username = '${username}'
+            ORDER BY exercisetype.name ASC
 
         `)
         res.json(exerciseTypes['rows']);

@@ -269,9 +269,10 @@ function AddingWorkoutsModal({
     exerciseSets,
     setExerciseSets,
     setAddingExercise,
-    setLoading,
     setSelectingDate
 }) {
+    let [warning, setWarning] = useState(null);
+
     const handleSetChange = (e, exercise, setNumber, property) => {
         try {
 
@@ -283,7 +284,6 @@ function AddingWorkoutsModal({
                     exerciseChange[exercise][setNumber][property] = e.target.checked;
 
                 } else {
-
                     exerciseChange[exercise][setNumber][property] = e.target.value;
                 }
                 return exerciseSets;
@@ -292,7 +292,22 @@ function AddingWorkoutsModal({
             console.error(err)
         }
 
-    }
+    };
+
+    const preventMinus = (e) => {
+        if (e.code === 'Minus') {
+            e.preventDefault();
+        }
+    };
+
+    const preventPasteNegative = (e) => {
+        const clipboardData = e.clipboardData || window.clipboardData;
+        const pastedData = parseFloat(clipboardData.getData('text'));
+
+        if (pastedData < 0) {
+            e.preventDefault();
+        }
+    };
 
     const addSet = (exercise) => {
 
@@ -321,6 +336,28 @@ function AddingWorkoutsModal({
         setExerciseSets(exerciseSetsCopy);
     }
 
+    const handleLogWorkout = () => {
+        let emptyFields: String = "";
+        for (let i = 0; i < exerciseSets.length; i++) {
+            let exercise = Object.keys(exerciseSets[i]).toString();
+            exerciseSets[i][exercise].forEach(set => {
+               if (!set['reps'] || !set['weight']) {
+                   emptyFields += `${exercise}\n`;
+                   return;
+               }
+            });
+        }
+        if (emptyFields) {
+            setWarning(`The following exercises contain empty fields: ${emptyFields} `);
+            return;
+        } else {
+
+            setSelectingDate(true);
+            setWarning(null);
+            return;
+        }
+    }
+
     return (
         <>
             <div className='modal-header log-workout' style={{display: 'flex', justifyContent: 'space-between'}}>
@@ -332,7 +369,7 @@ function AddingWorkoutsModal({
                 <span
                     className="material-symbols-outlined"
                     style={{fontSize: '32px', cursor: 'pointer'}}
-                    onClick={() => setSelectingDate(true)}
+                    onClick={handleLogWorkout}
                 >
                     done
                 </span>
@@ -386,13 +423,20 @@ function AddingWorkoutsModal({
                                                                                 handleSetChange(e, exercise, i, 'reps')}
                                                                             defaultValue={set['reps']}
                                                                             type='number'
-                                                                           name='reps'/>
+                                                                            name='reps'
+                                                                            onKeyDown={preventMinus}
+                                                                            onPaste={preventPasteNegative}
+
+                                                                        />
+
                                                                         <input
                                                                             onChange={e =>
                                                                                 handleSetChange(e, exercise, i, 'weight')}
-                                                                           defaultValue={set['weight']}
-                                                                           name='weight'
-                                                                           type='number'
+                                                                            defaultValue={set['weight']}
+                                                                            name='weight'
+                                                                            type='number'
+                                                                            onKeyDown={preventMinus}
+                                                                            onPaste={preventPasteNegative}
                                                                         />
                                                                         <select
                                                                             onChange={(e) =>
@@ -416,7 +460,6 @@ function AddingWorkoutsModal({
                                                                             defaultChecked={set['warmup']}
                                                                         />
                                                                     </div>
-
 
                                                                 )
                                                             })
@@ -457,7 +500,7 @@ function AddingWorkoutsModal({
                     })
                 }
 
-
+                {warning && <Text styles={{color: 'red'}}>{warning}</Text>}
                 <Button onClick={() => setAddingExercise(true)}>Add Exercise</Button>
             </div>
 
@@ -475,10 +518,12 @@ function AddExercisesModal({
     setAddingExercises
 }) {
 
-    const exerciseOptions = exercises.filter(exercise => {
+    let exerciseOptions = exercises.filter(exercise => {
 
         return !exercisesSelected.includes(exercise['name'])
     });
+
+
 
     const handleSelectionChange = (selectedOption) => {
         setNewSelectedExercises(selectedOption);
@@ -486,6 +531,7 @@ function AddExercisesModal({
     }
 
     const handleSubmit = () => {
+
         const newSelectedExercisesCopy = newSelectedExercises.map(exercise => {
             return {[exercise['value']]: []}
         });
