@@ -43,6 +43,11 @@ router.post('/createFullWorkout', async (req, res) => {
             let exerciseName = Object.keys(exerciseSet).toString();
             let sets = Object.values(exerciseSet)[0];
 
+            let personalRecord = (await db.query(`SELECT * FROM exercisetype 
+                WHERE username='${username}' AND
+                name='${exerciseName}'
+            `))['rows'][0]['personalrecord'];
+
             // Insert the exercises
             await db.query(`INSERT INTO exercise 
                 VALUES
@@ -55,9 +60,21 @@ router.post('/createFullWorkout', async (req, res) => {
                     VALUES
                         (${set['warmup']}, ${set['reps']}, ${set['intensity']}, '${workoutID}', '${exerciseName}', 
                             ${set['setNumber']}, ${set['weight']});
-                `)
-            }))
-        }))
+                `);
+
+                // Update the personal record if set contains a weight higher than current personal record
+                if (set['weight'] > personalRecord) {
+                    await db.query(`UPDATE exercisetype 
+                        SET personalrecord = ${set['weight']}
+                        WHERE username = '${username}' AND
+                        name = '${exerciseName}'
+                    `);
+                    personalRecord = set['weight'];
+                }
+
+
+            }));
+        }));
 
 
 

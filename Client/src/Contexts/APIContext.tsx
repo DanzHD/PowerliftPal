@@ -219,6 +219,7 @@ export function APIContextProvider({ children }) {
             }
 
             await fetch(`${BACKEND}/query/createFullWorkout`, options);
+            await getExercises();
 
 
 
