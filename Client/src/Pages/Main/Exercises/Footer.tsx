@@ -2,6 +2,7 @@ import Button from "../../../common/components/Button/Button.tsx";
 import Text from "../../../common/components/Text/Text.tsx";
 import {useAPIContext} from "../../../Contexts/APIContext.tsx";
 import './_exercise.scss'
+import {preventMinus, preventPasteNegative} from "../../../common/utils/FormValidation.tsx";
 
 function Footer({createExerciseRef}) {
 
@@ -31,24 +32,38 @@ function Footer({createExerciseRef}) {
                 <dialog ref={createExerciseRef}>
                     <div className='modal-container'>
 
-
                         <div className='modal-header'>
                             <Text heading={true}>Create new Exercise</Text>
                         </div>
 
                         <div className='modal-content'>
-                                <div>
+                                <div className='input-label-pair'>
 
                                     <label htmlFor='name'>Exercise Name</label>
-                                    <input type='text' name='name' required />
+                                    <input
+                                        onKeyDown={preventMinus}
+                                        onPaste={preventPasteNegative}
+                                        type='text'
+                                        name='name'
+                                        className='exercise-input'
+                                        required
+                                    />
                                 </div>
-                                <div>
+                                <div className='input-label-pair'>
                                     <label htmlFor='personalRecord'>Personal Record</label>
-                                    <input type='number' name='personalRecord' required />
+                                    <input
+                                        type='number'
+                                        name='personalRecord'
+                                        className='exercise-input'
+                                        onKeyDown={preventMinus}
+                                        onPaste={preventPasteNegative}
+                                        required
+                                    />
 
                                 </div>
 
-                                <div>
+                                <div className='input-label-pair'>
+
                                     <label htmlFor='muscleGroup'>Muscle Group</label>
                                     <select name='muscleGroup' >
                                         {muscleGroups.map(muscleGroup => {

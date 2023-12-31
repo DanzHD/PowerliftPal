@@ -9,6 +9,7 @@ import {useNavigate} from "react-router-dom";
 import Accordion from "../../../common/components/Accordion/Accordion.tsx";
 import Select from "react-select";
 import LoadingSpinner from "../../../common/components/LoadingSpinner/LoadingSpinner.tsx";
+import {preventMinus, preventPasteNegative} from "../../../common/utils/FormValidation.tsx";
 
 function Content() {
 
@@ -294,20 +295,7 @@ function AddingWorkoutsModal({
 
     };
 
-    const preventMinus = (e) => {
-        if (e.code === 'Minus') {
-            e.preventDefault();
-        }
-    };
 
-    const preventPasteNegative = (e) => {
-        const clipboardData = e.clipboardData || window.clipboardData;
-        const pastedData = parseFloat(clipboardData.getData('text'));
-
-        if (pastedData < 0) {
-            e.preventDefault();
-        }
-    };
 
     const addSet = (exercise) => {
 

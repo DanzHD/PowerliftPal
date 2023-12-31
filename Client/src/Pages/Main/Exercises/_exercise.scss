@@ -9,6 +9,14 @@
   box-sizing: border-box;
 }
 
+.exercise-input {
+  background-color: lightgray;
+  height: 2em;
+}
+.exercise-input:focus {
+  background-color: lightgray;
+}
+
 @media only screen and (min-width: $mobile-width) {
 
   .main.exercise {
