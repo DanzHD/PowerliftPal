@@ -8,7 +8,7 @@ import Footer from "./Footer.tsx";
 import {useRef} from "react";
 import {useAuthContext} from "../../../Contexts/AuthContext.tsx";
 
-function Exericse() {
+function Exercise() {
     const createExerciseRef = useRef(null);
     const navigate = useNavigate();
     const {logoutUser} = useAuthContext();
@@ -54,4 +54,4 @@ function Exericse() {
     )
 }
 
-export default Exericse;
+export default Exercise;

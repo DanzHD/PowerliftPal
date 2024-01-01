@@ -2,12 +2,12 @@ import './_signup.scss';
 import Text from "../../../common/components/Text/Text.tsx";
 import Button from "../../../common/components/Button/Button.tsx";
 import {Link, useNavigate} from "react-router-dom";
-import {useEffect, useRef, useState} from "react";
+import {FormEvent, useEffect, useRef} from "react";
 import {useAuthContext} from "../../../Contexts/AuthContext.tsx";
 import {DUPLICATE, INVALID_PASSWORD, INVALID_USERNAME} from "../../../common/utils/Constant.tsx";
 
 function SignUp() {
-    const signUpForm = useRef(null);
+    const signUpForm = useRef<HTMLFormElement>(null);
     const {
         registerUser,
         user,
@@ -24,20 +24,22 @@ function SignUp() {
         }
     }, []);
 
-    const handleSubmit =  async (e) => {
+    const handleSubmit =  async (e: FormEvent) => {
         try {
             e.preventDefault();
             setInvalidUsername(null);
             setInvalidPassword(null);
+            if (signUpForm.current) {
 
-            const username = signUpForm.current.username.value;
-            const password = signUpForm.current.password.value;
-            const userInfo = {
-                username: username,
-                password: password
+                const username = signUpForm.current.username.value;
+                const password = signUpForm.current.password.value;
+                const userInfo = {
+                    username: username,
+                    password: password
+                }
+                await registerUser(userInfo);
             }
-            await registerUser(userInfo);
-        } catch (err) {
+        } catch (err: any) {
 
             if (err.code === INVALID_USERNAME) {
                 setInvalidUsername(err['message']);

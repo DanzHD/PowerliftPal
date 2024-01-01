@@ -119,6 +119,7 @@ router.post('/workout/deleteOne', async (req, res) => {
             DELETE FROM workouts
             WHERE 
                 workoutid = '${workoutID}';
+            
         `)
 
         res.sendStatus(200);

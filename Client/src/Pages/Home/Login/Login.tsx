@@ -1,6 +1,6 @@
 import {useAuthContext} from "../../../Contexts/AuthContext.tsx";
 import {Link, useNavigate} from "react-router-dom";
-import {useEffect, useRef, useState} from "react";
+import {FormEvent, useEffect, useRef} from "react";
 import './_login.scss'
 import Button from "../../../common/components/Button/Button.tsx";
 import Text from "../../../common/components/Text/Text.tsx";
@@ -11,7 +11,7 @@ function Login() {
     const navigate = useNavigate();
     const {user, loginUser, invalidLogin} = useAuthContext();
 
-    const loginForm = useRef(null);
+    const loginForm = useRef<HTMLFormElement>(null);
 
 
     useEffect(() => {
@@ -20,21 +20,24 @@ function Login() {
         }
     }, []);
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = async (e: FormEvent) => {
         try {
 
             e.preventDefault();
-            const username = loginForm.current.username.value;
-            const password = loginForm.current.password.value;
-            const userInfo = {username: username, password: password};
-            await loginUser(userInfo);
+            if (loginForm.current) {
+
+                const username: String = loginForm.current.username.value;
+                const password: String = loginForm.current.password.value;
+                const userInfo = {username: username, password: password};
+                await loginUser(userInfo);
+            }
         } catch (err) {
             console.error(err);
         }
     }
 
 
-    const handleExampleUserSubmit = async (e) => {
+    const handleExampleUserSubmit = async (e: Event) => {
         try {
 
             e.preventDefault();

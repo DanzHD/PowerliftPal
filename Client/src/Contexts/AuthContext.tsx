@@ -8,7 +8,23 @@ import {
 
 } from "../common/utils/Constant.tsx";
 
-const AuthContext = createContext(null);
+interface IAuthContext {
+
+    user: String,
+    setUser: Function,
+    loginUser: Function,
+    logoutUser: Function,
+    registerUser: Function,
+    checkUserStatus: Function,
+    invalidLogin: Boolean,
+    invalidUsername: String,
+    invalidPassword: String,
+    setInvalidUsername: Function,
+    setInvalidPassword: Function
+
+}
+
+const AuthContext = createContext<IAuthContext>({} as IAuthContext);
 
 export function useAuthContext() {
 
@@ -22,23 +38,23 @@ export function useAuthContext() {
     return context;
 }
 
-export function AuthContextProvider({ children }) {
+export function AuthContextProvider({ children }: {children: any}) {
     const [loading, setLoading] = useState(true);
-    const [user, setUser] = useState(false);
+    const [user, setUser] = useState('');
     const [invalidLogin, setInvalidLogin] = useState(false);
-    const [invalidUsername, setInvalidUsername] = useState(null);
-    const [invalidPassword, setInvalidPassword] = useState(null);
+    const [invalidUsername, setInvalidUsername] = useState('');
+    const [invalidPassword, setInvalidPassword] = useState('');
 
     useEffect(() => {
         checkUserStatus();
 
     }, []);
 
-    const loginUser = async (userInfo) => {
+    const loginUser = async (userInfo: {username: String, password: String}) => {
         setLoading(true);
 
         const {username, password} = userInfo;
-        const options = {
+        const options: RequestInit = {
             method: 'POST',
             headers: {
                 'content-type': 'application/json'
@@ -70,7 +86,7 @@ export function AuthContextProvider({ children }) {
 
         try {
 
-            const options = {
+            const options: RequestInit = {
                 method: 'GET',
                 headers: {
                     'content-type': 'application/json'
@@ -79,7 +95,7 @@ export function AuthContextProvider({ children }) {
             }
             await fetch(`${BACKEND}/log-out`, options);
 
-            setUser(null);
+            setUser('');
 
         } catch(error) {
             console.error(error);
@@ -87,26 +103,26 @@ export function AuthContextProvider({ children }) {
         setLoading(false);
     }
 
-    const registerUser = async (userInfo) => {
+    const registerUser = async (userInfo: {username: String, password: String}) => {
         setLoading(true);
         const MINIMUM_PASSWORD_LENGTH = 8;
         const MINIMUM_USERNAME_LENGTH = 1;
 
         if (userInfo['username'].length < MINIMUM_USERNAME_LENGTH) {
             setLoading(false);
-            const error = Error("Username is too short");
+            const error: any = Error("Username is too short");
             error.code = INVALID_USERNAME;
             throw error;
         }
         if (userInfo['password'].length < MINIMUM_PASSWORD_LENGTH) {
             setLoading(false);
-            const error = Error("Password must have a minimum of 8 characters");
+            const error: any = Error("Password must have a minimum of 8 characters");
             error.code = INVALID_PASSWORD;
             throw error;
 
         }
 
-        const options = {
+        const options: RequestInit = {
             method: 'POST',
             headers: {
                 'content-type': 'application/json'
@@ -121,14 +137,14 @@ export function AuthContextProvider({ children }) {
         const res = await fetch(`${BACKEND}/sign-up`, options);
         if (res['status'] === DUPLICATE) {
             setLoading(false);
-            const error = new Error('Duplicate username');
+            const error: any = new Error('Duplicate username');
             error.code = DUPLICATE;
             throw error;
         }
 
         if (res['status'] !== SUCCESS) {
             setLoading(false);
-            const error = new Error();
+            const error: any = new Error();
             error.code = res['status'];
             throw error;
         }
@@ -142,7 +158,7 @@ export function AuthContextProvider({ children }) {
     const checkUserStatus = async () => {
         setLoading(true);
         try {
-            const options = {
+            const options: RequestInit = {
                 method: 'GET',
                 headers: {
                     'content-type': 'application/json'

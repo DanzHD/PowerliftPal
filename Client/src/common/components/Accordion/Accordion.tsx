@@ -1,16 +1,22 @@
-import {useState} from "react";
+import {Fragment, ReactNode, useState} from "react";
 import './Accordion.scss'
 import Text from "../Text/Text.tsx";
 
+interface IAccordion {
+    title: ReactNode,
+    content: ReactNode,
+
+}
 function Accordion({
     title,
     content
-}) {
-    const [isActive, setIsActive] = useState(false);
 
+
+}: IAccordion) {
+    const [isActive, setIsActive] = useState(false);
     return (
-        <>
-            <div className='accordion'>
+        <Fragment >
+            <div className='accordion' >
                 <div className='accordion-item'>
 
                     <div className='accordion-title' onClick={() => setIsActive(!isActive)}>
@@ -33,7 +39,7 @@ function Accordion({
 
                 </div>
             </div>
-        </>
+        </Fragment>
     )
 }
 

@@ -39,6 +39,8 @@ function WorkoutDetails() {
                     <div>Exercises</div>
                 </div>
 
+                {/*
+                    @ts-ignore */}
                 <div className='navbar-logo' onClick={logoutUser}>
 
                     <span className="material-symbols-outlined">

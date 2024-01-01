@@ -35,12 +35,12 @@ function Content() {
 
                     <div className='recent-workouts'>
                         {
-                            workouts.map(workout => {
+                            workouts.map((workout: {workoutdate: Date, workoutid: String, notes: String})  => {
                                 let date = new Date(workout.workoutdate).toDateString();
                                 return (
                                     <Card
                                         onClick={() => navigate(`/workout/${workout['workoutid']}`)}
-                                        key={workout['workoutid']}
+                                        keyValue={workout['workoutid']}
                                         date={date}
                                         notes={workout['notes']}
                                     />

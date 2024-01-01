@@ -1,8 +1,10 @@
 import './_loadingSpinner.scss'
 import {MoonLoader} from "react-spinners";
 
-
-function LoadingSpinner({styles}) {
+interface ILoadingSpinner {
+    styles?: Object
+}
+function LoadingSpinner({styles}: ILoadingSpinner) {
 
     return (
         <>

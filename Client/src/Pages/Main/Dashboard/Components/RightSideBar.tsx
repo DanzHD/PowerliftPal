@@ -1,7 +1,6 @@
 import Text from "../../../../common/components/Text/Text.tsx";
 import '../_dashboard.scss'
 import '../../../../Styles/_vars.scss'
-import {useEffect, useState} from "react";
 import {useAPIContext} from "../../../../Contexts/APIContext.tsx";
 
 function RightSideBar() {

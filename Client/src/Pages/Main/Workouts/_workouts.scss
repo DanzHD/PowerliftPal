@@ -276,6 +276,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+
   }
 
   .workouts-list-header > button {
@@ -291,6 +292,10 @@
     align-items: center;
     margin-top: 10px;
     box-sizing: border-box;
+  }
+
+  .workouts-list-header {
+    margin-top: 3em;
   }
 
   dialog.log-workout {
@@ -352,6 +357,8 @@
     width: calc(100vw - 2em);
 
   }
+
+
 
 
 

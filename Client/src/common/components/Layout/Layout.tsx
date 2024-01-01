@@ -1,12 +1,22 @@
 import './_layout.scss';
 import cx from "classnames";
+import {ReactNode} from "react";
+
+interface ILayout {
+    header?: ReactNode,
+    content?: ReactNode,
+    sideBar?: ReactNode,
+    footer?: ReactNode,
+    classNames?: any
+
+}
 function Layout({
     header: Header,
     content: Content,
     sideBar: SideBar,
     footer: Footer,
     classNames
-}) {
+}: ILayout) {
 
     const computedClassNamesMain = cx('main', classNames);
     const computedClassNamesHeader = cx('header', classNames);

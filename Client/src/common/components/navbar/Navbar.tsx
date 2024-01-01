@@ -1,7 +1,8 @@
 import './_navbar.scss';
-import { Children } from "react";
+import {ReactNode} from "react";
 
-function Navbar({ children }) {
+
+function Navbar({ children }: {children: ReactNode}) {
 
     return <div className='navbar'>
         {children}

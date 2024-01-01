@@ -2,8 +2,8 @@ import Accordion from "../../../common/components/Accordion/Accordion.tsx";
 import {useAPIContext} from "../../../Contexts/APIContext.tsx";
 import Button from "../../../common/components/Button/Button.tsx";
 import Text from "../../../common/components/Text/Text.tsx";
-import {useRef} from "react";
 import './_exercise.scss'
+import {useRef} from "react";
 
 function Content() {
 
@@ -14,18 +14,17 @@ function Content() {
     return (
 
         <>
-
             <div className='exercise-list-container'>
                 <div className='exercise-list-header'>
                     <Text subheading={true}>Exercise List</Text>
                 </div>
                 <div className='line'/>
 
-                {muscleGroups.map((muscleGroup) => {
-                    let exercise = exercises.filter(exercise => exercise['musclegroup'] === muscleGroup)
+                {muscleGroups.map((muscleGroup: string) => {
+                    let exercise: Array<Object> = exercises.filter((exercise: any) => exercise['musclegroup'] === muscleGroup)
                     let accordionContent = DisplayExercise({exercises: exercise, dialogRef});
 
-                    return <Accordion title={muscleGroup} key={muscleGroup} content={accordionContent}></Accordion>
+                    return <Accordion key={muscleGroup} title={muscleGroup} content={accordionContent}></Accordion>
                 })}
 
             </div>
@@ -33,16 +32,16 @@ function Content() {
     )
 }
 
-function DisplayExercise({exercises, dialogRef}) {
+function DisplayExercise({exercises, dialogRef}: {exercises: Array<Object>, dialogRef: any}) {
     
-    function handleOpenModal(e: Object) {
+    function handleOpenModal(e: any) {
 
-        let key: String = e.target.getAttribute('value');
+        let key: number = e.target.getAttribute('value');
         dialogRef.current[key].showModal();
     }
 
-    function handleCloseModal(e) {
-        let key: String = e.target.getAttribute('value');
+    function handleCloseModal(e: any) {
+        let key: number = e.target.getAttribute('value');
 
         dialogRef.current[key].close();
     }
@@ -52,7 +51,7 @@ function DisplayExercise({exercises, dialogRef}) {
         <>
             <div className='exercise-container'>
 
-                {exercises.map((exercise) => {
+                {exercises.map((exercise: any) => {
 
                     return (
                         <div key={exercise['name']}>

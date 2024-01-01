@@ -3,7 +3,7 @@ import Button from "../../../common/components/Button/Button.tsx";
 import '../../../Styles/_vars.scss'
 import '../../../common/components/Modal/_Modal.scss'
 import './_workouts.scss'
-import {Fragment, useEffect, useRef, useState} from "react";
+import {Fragment, MouseEventHandler, useEffect, useRef, useState} from "react";
 import {useAPIContext} from "../../../Contexts/APIContext.tsx";
 import {useNavigate} from "react-router-dom";
 import Accordion from "../../../common/components/Accordion/Accordion.tsx";
@@ -19,7 +19,7 @@ function Content() {
     const [displayDateSearch, setDisplayDateSearch] = useState(false);
     const [workouts, setWorkouts] = useState([]);
     const [loading, setLoading] = useState(false);
-    const [invalidFormInput, setInvalidFormInput] = useState(false);
+    const [invalidFormInput, setInvalidFormInput] = useState('');
     const {getWorkoutsByDate, getAllWorkouts, createWorkoutWithExercises} = useAPIContext();
 
     const [exerciseSets, setExerciseSets] = useState([]);
@@ -48,7 +48,7 @@ function Content() {
 
     }, []);
 
-    const handleSearch = async (e) => {
+    const handleSearch = async (e: any) => {
         e.preventDefault();
         setLoading(true)
         try {
@@ -67,7 +67,7 @@ function Content() {
                 return;
 
             } else {
-                setInvalidFormInput(false);
+                setInvalidFormInput('');
             }
 
             let w = await getWorkoutsByDate({fromDate, toDate});
@@ -86,7 +86,7 @@ function Content() {
             let workouts = await getAllWorkouts();
             setDisplayDateSearch(false);
             setWorkouts(workouts)
-            setInvalidFormInput(false);
+            setInvalidFormInput('');
 
         } catch (err) {
             console.error(err)
@@ -173,10 +173,9 @@ function Content() {
                                     setSelectingDate={setSelectingDate}
                                     setLoading={setLoading}
                                     exerciseSets={exerciseSets}
-                                    setExerciseSets={setExerciseSets}
                                     handleCloseModal={handleCloseModal}
                                     createWorkoutWithExercises={createWorkoutWithExercises}
-                                    getallWorkouts={getAllWorkouts}
+                                    getAllWorkouts={getAllWorkouts}
                                     setWorkouts={setWorkouts}
 
 
@@ -199,7 +198,6 @@ function Content() {
                                         exerciseSets={exerciseSets}
                                         setExerciseSets={setExerciseSets}
                                         handleCloseModal={handleCloseModal}
-                                        setLoading={setLoading}
                                         setSelectingDate={setSelectingDate}
                                     />
                         }
@@ -265,21 +263,29 @@ function Content() {
     )
 }
 
+interface IAddingWorkoutsModal {
+    handleCloseModal: MouseEventHandler<HTMLSpanElement>,
+    exerciseSets: any,
+    setExerciseSets: Function,
+    setAddingExercise: Function,
+    setSelectingDate: Function
+}
+
 function AddingWorkoutsModal({
     handleCloseModal,
     exerciseSets,
     setExerciseSets,
     setAddingExercise,
     setSelectingDate
-}) {
+}: IAddingWorkoutsModal) {
     let [warning, setWarning] = useState(null);
 
-    const handleSetChange = (e, exercise, setNumber, property) => {
+    const handleSetChange = (e: any, exercise: string, setNumber: string, property: string) => {
         try {
 
-            let exerciseChange = exerciseSets.find(exerciseSet => Object.keys(exerciseSet).toString() === exercise);
+            let exerciseChange = exerciseSets.find((exerciseSet: any) => Object.keys(exerciseSet).toString() === exercise);
 
-            setExerciseSets(exerciseSets => {
+            setExerciseSets((exerciseSets: any) => {
                 if (property === 'warmup') {
 
                     exerciseChange[exercise][setNumber][property] = e.target.checked;
@@ -297,9 +303,9 @@ function AddingWorkoutsModal({
 
 
 
-    const addSet = (exercise) => {
+    const addSet = (exercise: string) => {
 
-        let exerciseIndex: number = exerciseSets.findIndex(exerciseSet => Object.keys(exerciseSet).toString() === exercise);
+        let exerciseIndex: number = exerciseSets.findIndex((exerciseSet: any) => Object.keys(exerciseSet).toString() === exercise);
 
         let setNumber: number = exerciseSets[exerciseIndex][exercise].length + 1;
 
@@ -310,15 +316,15 @@ function AddingWorkoutsModal({
 
     }
 
-    const removeSet = (exercise) => {
-        let exerciseIndex: number = exerciseSets.findIndex(exerciseSet => Object.keys(exerciseSet).toString() === exercise);
+    const removeSet = (exercise: string) => {
+        let exerciseIndex: number = exerciseSets.findIndex((exerciseSet: any) => Object.keys(exerciseSet).toString() === exercise);
         let exerciseSetsCopy = exerciseSets.slice();
         exerciseSetsCopy[exerciseIndex][exercise].pop();
         setExerciseSets(exerciseSetsCopy);
     }
 
-    const removeExercise = (exercise) => {
-        let exerciseIndex: number = exerciseSets.findIndex(exerciseSet => Object.keys(exerciseSet).toString() === exercise);
+    const removeExercise = (exercise: string) => {
+        let exerciseIndex: number = exerciseSets.findIndex((exerciseSet: any) => Object.keys(exerciseSet).toString() === exercise);
         let exerciseSetsCopy = exerciseSets.slice();
         exerciseSetsCopy.splice(exerciseIndex, 1)
         setExerciseSets(exerciseSetsCopy);
@@ -328,7 +334,7 @@ function AddingWorkoutsModal({
         let emptyFields: String = "";
         for (let i = 0; i < exerciseSets.length; i++) {
             let exercise = Object.keys(exerciseSets[i]).toString();
-            exerciseSets[i][exercise].forEach(set => {
+            exerciseSets[i][exercise].forEach((set: {reps: String, weight: String}) => {
                if (!set['reps'] || !set['weight']) {
                    emptyFields += `${exercise}\n`;
                    return;
@@ -369,7 +375,7 @@ function AddingWorkoutsModal({
                 <div className='line' />
 
                 {
-                    exerciseSets.map((exerciseSet, i) => {
+                    exerciseSets.map((exerciseSet: any, i: number) => {
                         let exercise = Object.keys(exerciseSet).toString();
 
                         return (
@@ -400,7 +406,8 @@ function AddingWorkoutsModal({
                                                         </div>
                                                         {
 
-                                                            exerciseSet[exercise].map((set, i) => {
+                                                            exerciseSet[exercise].map((set: {reps: string, setNumber: string, weight: string, intensity: string, warmup: boolean}, i: string) => {
+
 
                                                                 return (
 
@@ -442,6 +449,7 @@ function AddingWorkoutsModal({
                                                                         <input
                                                                             onChange={(e) =>
                                                                                 handleSetChange(e, exercise, i, 'warmup')}
+                                                                            // @ts-ignore
                                                                             value={set['warmup']}
                                                                             name='warmup'
                                                                             type='checkbox'
@@ -496,6 +504,16 @@ function AddingWorkoutsModal({
     )
 }
 
+interface IAddExercisesModal {
+    setAddingExercise: Function,
+    exercises: any,
+    exercisesSelected: any,
+    setExercisesSelected: Function,
+    newSelectedExercises: any,
+    setNewSelectedExercises: Function,
+    setAddingExercises: Function
+}
+
 function AddExercisesModal({
     setAddingExercise,
     exercises,
@@ -504,27 +522,28 @@ function AddExercisesModal({
     newSelectedExercises,
     setNewSelectedExercises,
     setAddingExercises
-}) {
+}: IAddExercisesModal) {
 
-    let exerciseOptions = exercises.filter(exercise => {
+    let exerciseOptions = exercises.filter((exercise: any) => {
 
         return !exercisesSelected.includes(exercise['name'])
     });
 
 
 
-    const handleSelectionChange = (selectedOption) => {
+    const handleSelectionChange = (selectedOption: any) => {
         setNewSelectedExercises(selectedOption);
 
     }
 
     const handleSubmit = () => {
 
-        const newSelectedExercisesCopy = newSelectedExercises.map(exercise => {
+        // @ts-ignore
+        const newSelectedExercisesCopy = newSelectedExercises.map((exercise: any)=> {
             return {[exercise['value']]: []}
         });
 
-        setExercisesSelected(exercisesSelected => [...exercisesSelected, ...newSelectedExercisesCopy]);
+        setExercisesSelected((exercisesSelected: any) => [...exercisesSelected, ...newSelectedExercisesCopy]);
         setNewSelectedExercises([])
         setAddingExercises(false);
     }
@@ -551,7 +570,7 @@ function AddExercisesModal({
                 <div className='line' />
                 <Text subheading={true} styles={{textAlign: 'center'}}>Add Exercises</Text>
                 <Select
-                    options={exerciseOptions.map(exercise => {
+                    options={exerciseOptions.map((exercise: any) => {
                         return {value: exercise['name'], label: exercise['name']}
                     })}
                     isMulti={true}
@@ -568,16 +587,28 @@ function AddExercisesModal({
     )
 }
 
+
+interface IWorkoutDateModal {
+    setLoading: Function,
+    handleCloseModal: Function,
+    setSelectingDate: Function,
+    exerciseSets: any,
+    createWorkoutWithExercises: Function,
+    getAllWorkouts: Function,
+    setWorkouts: Function
+}
+
 function WorkoutDateModal({
     setLoading,
     handleCloseModal,
     setSelectingDate,
     exerciseSets,
     createWorkoutWithExercises,
-    getallWorkouts,
+    getAllWorkouts,
     setWorkouts
-}) {
-    const handleFormSubmit = async (e) => {
+
+}: IWorkoutDateModal) {
+    const handleFormSubmit = async (e: any) => {
         try {
             e.preventDefault();
             setLoading(true);
@@ -592,7 +623,7 @@ function WorkoutDateModal({
             console.error(err)
         } finally {
             setSelectingDate(false);
-            setWorkouts(await getallWorkouts());
+            setWorkouts(await getAllWorkouts());
             setLoading(false);
         }
     }

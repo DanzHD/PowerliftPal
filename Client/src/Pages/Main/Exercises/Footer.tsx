@@ -4,7 +4,7 @@ import {useAPIContext} from "../../../Contexts/APIContext.tsx";
 import './_exercise.scss'
 import {preventMinus, preventPasteNegative} from "../../../common/utils/FormValidation.tsx";
 
-function Footer({createExerciseRef}) {
+function Footer({createExerciseRef}: {createExerciseRef: any}) {
 
     const {muscleGroups, createExercise} = useAPIContext();
 
@@ -16,7 +16,7 @@ function Footer({createExerciseRef}) {
         createExerciseRef.current.close();
     }
 
-    const handleCreateExercise = async (e) => {
+    const handleCreateExercise = async (e: any) => {
         e.preventDefault();
         const exerciseInfo = {exerciseName: e.target.name.value,
             personalRecord: e.target.personalRecord.value, muscleGroup: e.target.muscleGroup.value}
@@ -66,7 +66,7 @@ function Footer({createExerciseRef}) {
 
                                     <label htmlFor='muscleGroup'>Muscle Group</label>
                                     <select name='muscleGroup' >
-                                        {muscleGroups.map(muscleGroup => {
+                                        {muscleGroups.map((muscleGroup: string) => {
                                             return <option value={muscleGroup} key={muscleGroup}>{muscleGroup}</option>
                                         })}
                                     </select>

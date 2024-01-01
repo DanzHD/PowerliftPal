@@ -7,7 +7,6 @@ import {useNavigate} from "react-router-dom";
 import Accordion from "../../../../common/components/Accordion/Accordion.tsx";
 import Text from "../../../../common/components/Text/Text.tsx";
 import exercise from "../../Exercises/Exercise.tsx";
-import {useAuthContext} from "../../../../Contexts/AuthContext.tsx";
 import LoadingSpinner from "../../../../common/components/LoadingSpinner/LoadingSpinner.tsx";
 
 function Content() {
@@ -16,7 +15,7 @@ function Content() {
     const [exercises, setExercises] = useState(null);
     const [sets, setSets] = useState(null);
     const [loading, setLoading] = useState(true);
-    const [workout, setWorkout] = useState(null);
+
     const navigate = useNavigate();
 
     const {getWorkout, getSets, deleteWorkout} = useAPIContext();
@@ -35,8 +34,8 @@ function Content() {
         (async function() {
             try {
 
-                let workoutDetails = await getWorkout({workoutID});
-                setWorkout(workoutDetails);
+                await getWorkout({workoutID});
+
             } catch (err) {
                 navigate('/workout')
             }
@@ -94,15 +93,15 @@ function Content() {
 
 
                 {
-                    exercises.map(exercise => {
+                    exercises.map((exercise: any) => {
 
-                        let exerciseSets = sets.filter(set => {
+                        let exerciseSets: any = sets.filter((set: any) => {
 
 
                             return set['exercisename'] === exercise['name']
                         });
 
-                        exerciseSets.sort((set1, set2) => set1['setnumber'] > set2['setnumber'] ? 1 : -1 )
+                        exerciseSets.sort((set1: any, set2: any) => set1['setnumber'] > set2['setnumber'] ? 1 : -1 )
 
                         return (
 
@@ -118,7 +117,7 @@ function Content() {
                                         </div>
 
                                         {
-                                            exerciseSets.map(exerciseSet => {
+                                            exerciseSets.map((exerciseSet: any) => {
                                                 return (
                                                     <div key={exerciseSet['setnumber']} className='set-entry'>
                                                         <Text>{exerciseSet['setnumber']}</Text>
@@ -131,7 +130,7 @@ function Content() {
                                                                 check
                                                             </span>
                                                             :
-                                                            <div >No </div>
+                                                            <div>No </div>
                                                         }
 
                                                     </div>

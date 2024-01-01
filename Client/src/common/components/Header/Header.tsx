@@ -1,7 +1,13 @@
 import Text from "../Text/Text.tsx";
 import './_header.scss'
 
-function Header({title, styles}) {
+interface IHeader {
+    title?: String,
+    styles?: Object
+
+}
+
+function Header({title, styles} : IHeader) {
 
 
     return (

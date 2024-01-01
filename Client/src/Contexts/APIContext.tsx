@@ -2,7 +2,23 @@ import {BACKEND} from "../common/utils/Constants.tsx";
 import {createContext, useContext, useEffect, useState} from "react";
 import Loading from "../Pages/Loading.tsx";
 
-const APIContext = createContext('');
+interface IAPIContext {
+    weeklyWorkouts: String
+    weeklyLiftWeight: String
+    getWeeklyWorkouts: Function
+    muscleGroups: Array<string>,
+    exercises: Array<Object>,
+    createExercise: Function,
+    getWorkoutsByDate: Function,
+    getAllWorkouts: Function,
+    getExercisesFromWorkout: Function,
+    createWorkoutWithExercises: Function,
+    getWorkout: Function,
+    getSets: Function,
+    deleteWorkout: Function
+}
+
+const APIContext = createContext<IAPIContext>({} as IAPIContext);
 
 export function useAPIContext() {
     const context = useContext(APIContext);
@@ -14,7 +30,7 @@ export function useAPIContext() {
     return context;
 }
 
-export function APIContextProvider({ children }) {
+export function APIContextProvider({ children }: {children: any}) {
     const [loading, setLoading] = useState(true);
     const [weeklyWorkouts, setWeeklyWorkouts] = useState(null);
     const [weeklyLiftWeight, setWeeklyLiftWeight] = useState(null);
@@ -35,7 +51,7 @@ export function APIContextProvider({ children }) {
     const getWeeklyWorkouts = async () => {
         setLoading(true);
         try {
-            const options = {
+            const options: RequestInit = {
                 method: 'GET',
                 headers: {
                     'content-type': 'application/json'
@@ -44,10 +60,10 @@ export function APIContextProvider({ children }) {
             }
 
             const sevenDaysAgo: Date = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
-            const res = await fetch(`${BACKEND}/allworkouts`, options);
+            const res: Response = await fetch(`${BACKEND}/allworkouts`, options);
             let workouts = await res.json();
 
-            workouts = workouts.filter(workout =>  new Date(workout['workoutdate']) > sevenDaysAgo);
+            workouts = workouts.filter((workout: {workoutid: String, workoutdate: Date, notes: String, username: String}) =>  new Date(workout['workoutdate']) > sevenDaysAgo);
 
             setWeeklyWorkouts(workouts.length);
         } catch(error) {
@@ -58,7 +74,7 @@ export function APIContextProvider({ children }) {
 
     const getWeeklyLiftWeight = async () => {
         try {
-            const options = {
+            const options: RequestInit = {
                 method: 'GET',
                 headers: {
                     'content-type': 'application/json'
@@ -78,7 +94,7 @@ export function APIContextProvider({ children }) {
     const getMuscleGroups = async () => {
         setLoading(true);
         try {
-            const options = {
+            const options: RequestInit = {
                 method: 'GET',
                 credentials: 'include',
                 headers: {
@@ -88,7 +104,7 @@ export function APIContextProvider({ children }) {
             }
             let res = await fetch(`${BACKEND}/bodypart/readAll`, options);
             let muscleGroups = await res.json();
-            muscleGroups = muscleGroups.map(key => {
+            muscleGroups = muscleGroups.map((key: {musclegroup: String}) => {
 
                 return key['musclegroup'];
             })
@@ -105,7 +121,7 @@ export function APIContextProvider({ children }) {
     const getExercises = async () => {
         setLoading(true);
         try {
-            const options = {
+            const options: RequestInit = {
                 method: 'GET',
                 credentials: 'include',
                 headers: {
@@ -125,10 +141,10 @@ export function APIContextProvider({ children }) {
         setLoading(false);
     }
 
-    const createExercise = async ({exerciseInfo}) => {
+    const createExercise = async ({exerciseInfo}: {exerciseInfo: Object}) => {
         try {
             setLoading(true)
-            const options = {
+            const options: RequestInit = {
                 method: 'POST',
                 credentials: 'include',
                 headers: {
@@ -148,9 +164,9 @@ export function APIContextProvider({ children }) {
 
     }
 
-    const getWorkoutsByDate = async ({fromDate, toDate}) => {
+    const getWorkoutsByDate = async ({fromDate, toDate}: {fromDate: Date, toDate: Date}) => {
         try {
-            const options: Object  = {
+            const options: RequestInit  = {
                 method: 'GET',
                 credentials: 'include',
                 headers: {
@@ -168,7 +184,7 @@ export function APIContextProvider({ children }) {
 
     const getAllWorkouts = async () => {
         try {
-            const options: Object  = {
+            const options: RequestInit  = {
                 method: 'GET',
                 credentials: 'include',
                 headers: {
@@ -184,9 +200,9 @@ export function APIContextProvider({ children }) {
         }
     }
 
-    const getExercisesFromWorkout = async ({workoutID}) => {
+    const getExercisesFromWorkout = async ({workoutID}: {workoutID: String}) => {
         try {
-            const options: Object = {
+            const options: RequestInit = {
                 method: 'GET',
                 credentials: 'include',
                 headers: {
@@ -203,9 +219,9 @@ export function APIContextProvider({ children }) {
         }
     }
 
-    const createWorkoutWithExercises = async ({exerciseSets, date, notes}) => {
+    const createWorkoutWithExercises = async ({exerciseSets, date, notes}: {exerciseSets: Object, date: Date, notes: String}) => {
         try {
-            const options: Object = {
+            const options: RequestInit = {
                 method: 'POST',
                 credentials: 'include',
                 headers: {
@@ -228,9 +244,9 @@ export function APIContextProvider({ children }) {
         }
     }
 
-    const getWorkout = async ({workoutID}) => {
+    const getWorkout = async ({workoutID}: {workoutID: String}) => {
         try {
-            const options: Object = {
+            const options: RequestInit = {
                 method: 'GET',
                 credentials: 'include',
                 headers: {
@@ -243,14 +259,14 @@ export function APIContextProvider({ children }) {
             return workout;
 
         } catch (err) {
+            console.error(err);
 
-            throw new Error(err);
         }
     }
 
-    const getSets = async ({workoutID}) => {
+    const getSets = async ({workoutID}: {workoutID: String}) => {
         try {
-            const options: Object = {
+            const options: RequestInit = {
                 method: 'GET',
                 credentials: 'include',
                 headers: {
@@ -267,10 +283,10 @@ export function APIContextProvider({ children }) {
         }
     }
 
-    const deleteWorkout = async ({workoutID}) => {
+    const deleteWorkout = async ({workoutID}: {workoutID: String}) => {
         try {
             setLoading(true)
-            const options: Object = {
+            const options: RequestInit = {
                 method: 'POST',
                 credentials: 'include',
                 headers: {
@@ -289,7 +305,7 @@ export function APIContextProvider({ children }) {
         }
     }
 
-    const contextData = {
+    const contextData: IAPIContext = {
         weeklyWorkouts,
         weeklyLiftWeight,
         getWeeklyWorkouts,
