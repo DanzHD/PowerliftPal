@@ -13,3 +13,4 @@ Backend: `Express`
 
 Authentication: [`Session-Cookies`]
 
+Database: [`Postgressql`]
