@@ -30,7 +30,7 @@ app.use(cookieParser('secretCode'));
 app.use(session({ secret: "secretCode", resave: false, saveUninitialized: false,
     cookie: {
         sameSite: process.env.NODE_ENV === "production" ? 'none' : 'lax',
-        secure: process.env.NODE_ENV === "production",
+        secure: process.env.NODE_ENV === "production"
     } }));
 app.use(passport.initialize());
 app.use(passport.session());
