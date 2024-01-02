@@ -31,7 +31,7 @@ passport.use(
 
 passport.serializeUser((user, done) => {
     console.log(`Serializing ${user.username}`);
-    done(null, user.username);
+    return done(null, user.username);
 });
 
 passport.deserializeUser(async (username, done) => {
@@ -39,9 +39,9 @@ passport.deserializeUser(async (username, done) => {
     try {
         const user = (await db.query(`SELECT * FROM users WHERE username='${username}'`))['rows'][0]
 
-        done(null, user);
+        return done(null, user);
     } catch(err) {
-        done(err);
+        return done(err);
     }
 });
 
@@ -53,7 +53,6 @@ router.post('/log-in',
 );
 
 router.get('/log-in/success', (req, res) => {
-    console.log(req.user.username);
     res.json({username: req.user.username});
 });
 
