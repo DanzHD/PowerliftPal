@@ -45,6 +45,10 @@ app.use('/query', queriesRoute);
 
 const PORT = process.env.PORT || 5000
 
+app.get("/", (req, res) => {
+    res.send("Test")
+})
+
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
