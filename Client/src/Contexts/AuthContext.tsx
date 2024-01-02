@@ -4,7 +4,7 @@ import Loading from "../Pages/Loading.tsx";
 import {
     DUPLICATE,
     INVALID_PASSWORD,
-    INVALID_USERNAME, SUCCESS, UNAUTHORIZED
+    INVALID_USERNAME, SERVER_ERROR, SUCCESS, UNAUTHORIZED
 
 } from "../common/utils/Constant.tsx";
 
@@ -71,6 +71,10 @@ export function AuthContextProvider({ children }: {children: any}) {
             setLoading(false);
             setInvalidLogin(true);
             throw new Error('unauthorized');
+        }
+        if (res['status'] === SERVER_ERROR) {
+            setLoading(false);
+            throw new Error('Internal Server error');
         }
 
         let {username: user} = await res.json();
