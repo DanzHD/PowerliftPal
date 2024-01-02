@@ -27,7 +27,11 @@ app.use(bodyParser.urlencoded({extended: true}));
 
 // Authentication middleware
 app.use(cookieParser('secretCode'));
-app.use(session({ secret: "secretCode", resave: false, saveUninitialized: false, proxy: true }));
+app.use(session({ secret: "secretCode", resave: false, saveUninitialized: false,
+    cookie: {
+        sameSite: process.env.NODE_ENV === "production" ? 'none' : 'lax',
+        secure: process.env.NODE_ENV === "production",
+    } }));
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(express.urlencoded({ extended: false }));
